@@ -103,6 +103,7 @@ body{color:var(--mug);font-family:var(--hand);font-size:14px;line-height:1.5;min
 .ai-box{margin:0;max-height:132px;overflow:auto;white-space:pre-wrap;word-break:break-all;background:var(--paper);border-radius:12px;padding:10px 12px;
   font:12px/1.55 "Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;color:var(--mug);border:1.5px dashed rgba(37,40,32,.25)}
 .ai-box:focus-visible{outline:2px solid var(--tang)}
+.ai-full{display:block;width:100%;height:180px;max-height:none;resize:none;margin-top:6px;border-style:solid;border-color:var(--green)}
 .ai-cap{font-size:12px;color:var(--green);margin:0 0 4px}
 .ai-actions{display:flex;gap:8px;margin-top:10px}
 .ai-actions .btn{text-align:center;text-decoration:none;font-size:15px}
@@ -204,7 +205,7 @@ body{color:var(--mug);font-family:var(--hand);font-size:14px;line-height:1.5;min
         <button type="button" class="btn primary" id="copyPrompt">프롬프트 복사하기</button>
       </div>
       <p class="ai-note" id="copyNote" role="status"></p>
-      <pre class="ai-box" id="fullPrompt" hidden></pre>
+      <textarea class="ai-box ai-full" id="fullPrompt" readonly hidden aria-label="전체 프롬프트 (누르면 전체 선택)"></textarea>
     </section>
 
     <a class="join" href="https://open.kakao.com/o/gb8hYZti" target="_blank" rel="noopener">
@@ -1056,7 +1057,7 @@ function copyPromptText(openGPT){
   const filled=state.slots.filter(m=>m&&m.title).length;
   const say=ok=>{copyNote.textContent=ok
     ?(openGPT?"복사했어요! 열린 ChatGPT 입력창에 붙여넣기만 하면 돼요.":"복사했어요! ChatGPT 입력창에 붙여넣어 주세요.")+(filled<3?" (영화를 더 채울수록 분석이 정확해져요)":"")
-    :"자동 복사가 막혀 있어요. 아래 ‘전체 프롬프트’를 길게 눌러 복사해 주세요.";};
+    :"자동 복사가 막혀 있어서 아래에 전체 글을 선택해 뒀어요. 뜨는 메뉴에서 ‘복사’를 눌러 주세요. 메뉴가 안 보이면 상자를 한 번 누르세요.";};
   let syncOk=false;
   const ta=document.createElement("textarea");ta.value=text;ta.setAttribute("readonly","");
   ta.style.cssText="position:fixed;top:0;left:0;width:1px;height:1px;opacity:0";document.body.appendChild(ta);
@@ -1068,7 +1069,11 @@ function copyPromptText(openGPT){
   }else{say(syncOk);if(!syncOk)showFull();}
   if(openGPT)window.open("https://chatgpt.com/","_blank","noopener");
 }
-function showFull(){const f=document.getElementById("fullPrompt");f.textContent=buildPrompt();f.hidden=false;}
+const fullBox=document.getElementById("fullPrompt");
+function selectAllFull(){try{fullBox.focus({preventScroll:true});}catch(e){fullBox.focus();}fullBox.select();fullBox.setSelectionRange(0,fullBox.value.length);}
+function showFull(){fullBox.value=buildPrompt();fullBox.hidden=false;fullBox.scrollTop=0;selectAllFull();fullBox.scrollIntoView({behavior:"smooth",block:"center"});}
+fullBox.addEventListener("click",selectAllFull);
+fullBox.addEventListener("focus",()=>setTimeout(selectAllFull,0));
 document.getElementById("copyPrompt").addEventListener("click",()=>copyPromptText(false));
 
 /* ---------- 아래로 더 있어요 표시 ---------- */
