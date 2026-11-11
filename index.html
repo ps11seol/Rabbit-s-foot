@@ -946,7 +946,16 @@ async function drawChart(){
   LABELS.forEach((label,i)=>{
     const col=i%3,row=Math.floor(i/3),x=GX+col*(sw+gap),y=top+row*rowH,m=state.slots[i],p=posters[i];
     ctx.save();rr(ctx,x,y,sw,sh,26);ctx.fillStyle=(m&&!p&&m.title)?C.white:C.mint;ctx.fill();ctx.clip();
-    if(p){const r=Math.max(sw/p.width,sh/p.height),dw=p.width*r,dh=p.height*r;ctx.drawImage(p,x+(sw-dw)/2,y+(sh-dh)/2,dw,dh);}
+    if(p){const r=Math.max(sw/p.width,sh/p.height),dw=p.width*r,dh=p.height*r;ctx.drawImage(p,x+(sw-dw)/2,y+(sh-dh)/2,dw,dh);
+      // 포스터 아래쪽에 영화 제목
+      if(m&&m.title){
+        ctx.font="27px "+F;const ls=wrapLines(ctx,m.title,sw-28).slice(0,2);
+        const gh=56+ls.length*32,g=ctx.createLinearGradient(0,y+sh-gh,0,y+sh);
+        g.addColorStop(0,"rgba(37,40,32,0)");g.addColorStop(.45,"rgba(37,40,32,.72)");g.addColorStop(1,"rgba(37,40,32,.9)");
+        ctx.fillStyle=g;ctx.fillRect(x,y+sh-gh,sw,gh);
+        ctx.fillStyle="#fff";ctx.textAlign="left";
+        ls.forEach((l,k)=>ctx.fillText(l,x+14,y+sh-18-(ls.length-1-k)*32));
+      }}
     ctx.restore();
     if(m&&!p&&m.title){ctx.fillStyle=C.mug;ctx.font="38px "+F;ctx.textAlign="center";
       const ls=wrapLines(ctx,m.title,sw-40).slice(0,4);ls.forEach((l,k)=>ctx.fillText(l,x+sw/2,y+sh/2-(ls.length-1)*24+k*48+12));ctx.textAlign="left";}
