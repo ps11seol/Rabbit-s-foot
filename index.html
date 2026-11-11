@@ -74,7 +74,6 @@ body{color:var(--mug);font-family:var(--hand);font-size:14px;line-height:1.5;min
 .slot.filled .num{color:#fff;background:var(--mug);padding:2px 4px;border-radius:5px;top:4px;left:4px}
 .slot.textonly{background:var(--white);color:var(--mug);padding:8px;font-size:14px;line-height:1.25;text-align:center;word-break:keep-all}
 .label{font-size:12px;line-height:1.22;text-align:center;word-break:keep-all;min-height:2.44em}
-.cell.rec .label span{background:linear-gradient(transparent 55%,var(--yellow) 55%)}
 
 .desk{appearance:none;border:0;background:none;padding:0;font:inherit;cursor:pointer;display:block;
   position:relative;margin:22px auto 0;width:86%;max-width:340px;-webkit-user-select:none;user-select:none}
@@ -97,6 +96,14 @@ body{color:var(--mug);font-family:var(--hand);font-size:14px;line-height:1.5;min
 .info{margin-top:14px;background:var(--white);border-radius:18px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr;gap:6px 12px}
 .info dt{color:var(--green);font-size:13px;white-space:nowrap}
 .info dd{margin:0;font-size:13px;word-break:keep-all}
+.join{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding:16px 18px;
+  background:var(--green);color:var(--paper);text-decoration:none;border:2.5px solid var(--mug);
+  border-radius:20px 24px 18px 22px/22px 18px 24px 20px;box-shadow:0 5px 0 var(--mug)}
+.join:active{transform:translateY(3px);box-shadow:0 2px 0 var(--mug)}
+.join:focus-visible{outline:3px solid var(--tang);outline-offset:3px}
+.join-txt{display:flex;flex-direction:column;font-size:22px;line-height:1.2}
+.join-txt small{font-size:12px;color:var(--yellow);margin-bottom:3px}
+.join-arrow{width:44px;height:44px;flex:none;border-radius:50%;background:var(--yellow);color:var(--mug);display:grid;place-items:center}
 .foot{display:flex;justify-content:center;margin-top:10px;font-size:8.5px;letter-spacing:.3em;color:var(--soft)}
 
 /* 하단 버튼 */
@@ -166,9 +173,13 @@ body{color:var(--mug);font-family:var(--hand);font-size:14px;line-height:1.5;min
     <button type="button" class="desk" id="desk" aria-label="토끼 쓰다듬기"><img src="rabbit.png" alt="책상에 엎드려 그림을 그리는 토끼" width="1000" height="557"></button>
 
     <dl class="info">
-      <dt>상영회</dt><dd>추천영화는 토끼발 상영회에서 만나요!</dd>
+      <dt>상영회</dt><dd>토끼발 상영회에서 만나요!</dd>
       <dt>만든 사람</dt><dd>영화감상시그 토끼발 · 시그장 박설 제작</dd>
     </dl>
+    <a class="join" href="https://open.kakao.com/o/gb8hYZti" target="_blank" rel="noopener">
+      <span class="join-txt"><small>영화감상시그 토끼발</small>가입신청 바로가기</span>
+      <span class="join-arrow" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M5 11.4c3.8-.3 7.7-.2 11.2.2M12 6.2c1.7 1.6 3.3 3.3 4.4 5.2-1.3 1.8-2.8 3.5-4.6 5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span>
+    </a>
     <div class="foot">RABBIT'S FOOT MOVIE SIG</div>
   </section>
 </div>
@@ -208,12 +219,11 @@ body{color:var(--mug);font-family:var(--hand);font-size:14px;line-height:1.5;min
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 const LABELS=[
   "대외적 최애 영화","남들에게 말 안하는 최애 영화","나만 좋아할 것 같은 영화",
   "제일 많이 다시 본 영화","한때 최애 영화","내 인생이 담겨있는 영화",
-  "이 영화처럼 살고 싶다","최근에 발견한 명작","지금 사람들한테 추천할 영화"
+  "이 영화처럼 살고 싶다","최근에 발견한 명작","제일 여운 남는 영화"
 ];
 const KEY="tokkibal-taste-v1";
 let state={title:"나는 영화가 너무너무 좋다",slots:Array(9).fill(null)};
@@ -226,7 +236,7 @@ const grid=document.getElementById("grid");
 function render(){
   grid.innerHTML="";
   LABELS.forEach((label,i)=>{
-    const cell=document.createElement("div");cell.className="cell"+(i===8?" rec":"");
+    const cell=document.createElement("div");cell.className="cell";
     const b=document.createElement("button");b.type="button";b.className="slot";
     const m=state.slots[i];const num=String(i+1).padStart(2,"0");
     if(m&&m.img){
@@ -249,7 +259,9 @@ function render(){
   });
 }
 
-/* ---------- 영화 검색: 위키백과(한국어·영어) + iTunes, 키 불필요 ---------- */
+/* ---------- 영화 검색 ----------
+   TMDB 키가 있으면 TMDB(한국어 제목·포스터)를 쓰고, 없으면 iTunes·위키백과로 찾는다. */
+const TMDB_KEY="";
 let jsonpN=0;
 function jsonp(url,ms=6000){
   return new Promise((res,rej)=>{
@@ -263,7 +275,16 @@ function jsonp(url,ms=6000){
   });
 }
 function withTimeout(p,ms){return Promise.race([p,new Promise((_,rej)=>setTimeout(()=>rej(new Error("timeout")),ms))]);}
-const cleanTitle=t=>t.replace(/\s*\((?:\d{4}년\s*)?(?:[^()]*\s)?영화\)$/,"").replace(/\s*\((?:\d{4}\s+)?(?:[^()]*\s)?film\)$/i,"").trim();
+async function tmdb(term){
+  const u="https://api.themoviedb.org/3/search/movie?api_key="+TMDB_KEY+"&language=ko-KR&include_adult=false&query="+encodeURIComponent(term);
+  const r=await withTimeout(fetch(u),7000);if(!r.ok)throw new Error("http "+r.status);
+  const d=await r.json();
+  return (d.results||[]).sort((a,b)=>(b.popularity||0)-(a.popularity||0)).map(x=>({
+    title:x.title||x.original_title,year:(x.release_date||"").slice(0,4),
+    director:(x.original_title&&x.original_title!==x.title)?x.original_title:"",
+    img:x.poster_path?"https://image.tmdb.org/t/p/w342"+x.poster_path:null}));
+}
+const cleanTitle=t=>t.replace(/\s*\([^()]*영화\)$/,"").replace(/\s*\([^()]*film\)$/i,"").trim();
 async function wiki(lang,term){
   const url="https://"+lang+".wikipedia.org/w/api.php?action=query&format=json&formatversion=2&origin=*"+
     "&generator=search&gsrnamespace=0&gsrlimit=20&gsrsearch="+encodeURIComponent(term)+
@@ -271,26 +292,26 @@ async function wiki(lang,term){
   const r=await withTimeout(fetch(url),7000);
   if(!r.ok)throw new Error("http "+r.status);
   const d=await r.json();
-  const pages=(d.query&&d.query.pages)||[];
-  pages.sort((a,b)=>(a.index||0)-(b.index||0));
+  const pages=((d.query&&d.query.pages)||[]).sort((a,b)=>(a.index||0)-(b.index||0));
+  // 영화 문서만: "2019년 영화", "2014 film" 같은 설명이 붙은 것
   const isFilm=lang==="ko"
-    ? p=>/영화/.test(p.description||"")||/\(.*영화\)$/.test(p.title)
-    : p=>/\bfilm\b/i.test(p.description||"")||/\(.*film\)$/i.test(p.title);
-  return pages.filter(isFilm).map(p=>{
+    ? p=>/\d{4}년.*영화$/.test(p.description||"")||/\(.*영화\)$/.test(p.title)
+    : p=>/\b\d{4}\b.*\bfilm\b/i.test(p.description||"")||/\(.*film\)$/i.test(p.title);
+  return pages.filter(p=>isFilm(p)&&p.thumbnail).map(p=>{
     const y=((p.description||"")+" "+p.title).match(/(19|20)\d{2}/);
-    return {title:cleanTitle(p.title),year:y?y[0]:"",director:p.description||"",
-            img:p.thumbnail?p.thumbnail.source:null};
+    return {title:cleanTitle(p.title),year:y?y[0]:"",director:"",img:p.thumbnail.source};
   });
 }
 async function itunes(term){
-  const base="https://itunes.apple.com/search?media=movie&entity=movie&limit=15&term="+encodeURIComponent(term);
-  const d=await jsonp(base+"&country=KR");
+  const base="https://itunes.apple.com/search?media=movie&entity=movie&limit=20&term="+encodeURIComponent(term);
+  const d=await jsonp(base+"&country=KR&lang=ko_kr");
   return ((d&&d.results)||[]).map(x=>({
     title:x.trackName,year:(x.releaseDate||"").slice(0,4),director:x.artistName||"",
     img:x.artworkUrl100?x.artworkUrl100.replace(/\/\d+x\d+bb\./,"/400x600bb."):null}));
 }
 async function searchMovies(term){
-  const parts=await Promise.allSettled([wiki("ko",term),itunes(term),wiki("en",term)]);
+  const jobs=TMDB_KEY?[tmdb(term)]:[itunes(term),wiki("ko",term),wiki("en",term)];
+  const parts=await Promise.allSettled(jobs);
   if(parts.every(p=>p.status==="rejected"))throw new Error("network");
   const out=[],seen=new Set();
   for(const p of parts){
@@ -300,7 +321,6 @@ async function searchMovies(term){
       if(seen.has(key))continue;seen.add(key);out.push(m);
     }
   }
-  // 포스터 있는 것 먼저
   return out.filter(m=>m.img).concat(out.filter(m=>!m.img)).slice(0,30);
 }
 
@@ -379,31 +399,113 @@ resetBtn.addEventListener("click",()=>{
   state.slots=Array(9).fill(null);persist();render();
 });
 
-/* ---------- 이미지 저장 ---------- */
+/* ---------- 이미지 저장: 캔버스에 직접 그린다 (1080×1920, 스토리 비율) ---------- */
 const shotPanel=document.getElementById("shotPanel"),scrim2=document.getElementById("scrim2"),shotBody=document.getElementById("shotBody");
 function closeShot(){shotPanel.hidden=true;scrim2.hidden=true;document.body.style.overflow="";}
 scrim2.addEventListener("click",closeShot);
 document.getElementById("closeShot").addEventListener("click",closeShot);
+
+function loadImg(src,cors){
+  return new Promise((res,rej)=>{const im=new Image();if(cors)im.crossOrigin="anonymous";
+    const t=setTimeout(()=>rej(new Error("timeout")),9000);
+    im.onload=()=>{clearTimeout(t);res(im);};im.onerror=()=>{clearTimeout(t);rej(new Error("img"));};im.src=src;});
+}
+async function posterFor(m){
+  if(!m||!m.img)return null;
+  if(m.img.startsWith("data:"))return loadImg(m.img,false);
+  // 다른 사이트 그림은 CORS를 허용하는 이미지 중계(wsrv.nl)를 거쳐 불러와야 캔버스로 저장된다
+  try{return await loadImg("https://wsrv.nl/?url="+encodeURIComponent(m.img)+"&w=600&output=jpg",true);}catch(e){}
+  try{return await loadImg(m.img,true);}catch(e){}
+  return null;
+}
+function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+function wrapLines(ctx,text,maxW){
+  const words=text.split(" "),lines=[];let cur="";
+  for(const w of words){const t=cur?cur+" "+w:w;if(ctx.measureText(t).width<=maxW||!cur)cur=t;else{lines.push(cur);cur=w;}}
+  if(cur)lines.push(cur);return lines;
+}
+async function drawChart(){
+  const F='"LeeSeoyun", "Apple SD Gothic Neo", sans-serif';
+  try{await Promise.all([document.fonts.load('40px LeeSeoyun'),document.fonts.ready]);}catch(e){}
+  const W=1080,H=1920,c=document.createElement("canvas");c.width=W;c.height=H;
+  const ctx=c.getContext("2d");
+  const C={mug:"#252820",paper:"#F7F3E9",green:"#31594C",tang:"#F18B51",mint:"#DFE8D5",yellow:"#F3D985",white:"#FFFDF8"};
+  // 종이 + 모눈
+  ctx.fillStyle=C.paper;ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle="rgba(37,40,32,.06)";ctx.lineWidth=2;
+  for(let x=0;x<=W;x+=48){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<=H;y+=48){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  // 종이 결
+  for(let i=0;i<9000;i++){ctx.fillStyle="rgba(37,40,32,"+(Math.random()*.05)+")";ctx.fillRect(Math.random()*W,Math.random()*H,1.6,1.6);}
+
+  const M=60;
+  // 이름표
+  try{const rb=await loadImg("rabbit.png",false);ctx.drawImage(rb,M,62,200,200*rb.height/rb.width);}catch(e){}
+  ctx.fillStyle=C.mug;ctx.textBaseline="alphabetic";
+  ctx.font="64px "+F;ctx.fillText("토끼발",M+222,130);
+  ctx.font="22px "+F;if("letterSpacing" in ctx)ctx.letterSpacing="7px";ctx.fillText("RABBIT'S FOOT",M+224,170);if("letterSpacing" in ctx)ctx.letterSpacing="0px";
+  ctx.font="30px "+F;const pill="영화감상시그",pw=ctx.measureText(pill).width+44;
+  ctx.fillStyle=C.mint;rr(ctx,W-M-pw,78,pw,54,27);ctx.fill();ctx.fillStyle=C.green;ctx.fillText(pill,W-M-pw+22,115);
+  // 제목 + 점
+  ctx.fillStyle=C.mug;ctx.font="84px "+F;ctx.fillText("영화 취향표",M,300);
+  ctx.fillStyle=C.yellow;ctx.beginPath();ctx.arc(W-M-120,268,26,0,7);ctx.fill();
+  ctx.fillStyle=C.tang;ctx.beginPath();ctx.arc(W-M-40,262,40,0,7);ctx.fill();
+  ctx.fillStyle=C.mug;[[-130,260],[-111,276]].forEach(([dx,y])=>{ctx.beginPath();ctx.arc(W-M+dx,y,4,0,7);ctx.fill();});
+  [[-50,252],[-40,262],[-30,272]].forEach(([dx,y])=>{ctx.beginPath();ctx.arc(W-M+dx,y,4.5,0,7);ctx.fill();});
+
+  // 9칸
+  const gap=24,top=336,sw=(W-2*M-2*gap)/3,sh=sw*4/3,rowH=sh+80;
+  const posters=await Promise.all(state.slots.map(posterFor));
+  LABELS.forEach((label,i)=>{
+    const col=i%3,row=Math.floor(i/3),x=M+col*(sw+gap),y=top+row*rowH,m=state.slots[i],p=posters[i];
+    ctx.save();rr(ctx,x,y,sw,sh,26);ctx.fillStyle=(m&&!p&&m.title)?C.white:C.mint;ctx.fill();ctx.clip();
+    if(p){const r=Math.max(sw/p.width,sh/p.height),dw=p.width*r,dh=p.height*r;ctx.drawImage(p,x+(sw-dw)/2,y+(sh-dh)/2,dw,dh);}
+    ctx.restore();
+    if(m&&!p&&m.title){ctx.fillStyle=C.mug;ctx.font="38px "+F;ctx.textAlign="center";
+      const ls=wrapLines(ctx,m.title,sw-40).slice(0,4);ls.forEach((l,k)=>ctx.fillText(l,x+sw/2,y+sh/2-(ls.length-1)*24+k*48+12));ctx.textAlign="left";}
+    ctx.lineWidth=5;ctx.strokeStyle=C.mug;rr(ctx,x,y,sw,sh,26);ctx.stroke();
+    // 번호
+    const num=String(i+1).padStart(2,"0");ctx.font="26px "+F;
+    if(p){ctx.fillStyle=C.mug;rr(ctx,x+12,y+12,52,38,10);ctx.fill();ctx.fillStyle="#fff";ctx.fillText(num,x+21,y+40);}
+    else{ctx.fillStyle=C.green;ctx.fillText(num,x+20,y+44);}
+    // 문구
+    ctx.fillStyle=C.mug;ctx.font="28px "+F;ctx.textAlign="center";
+    wrapLines(ctx,label,sw+6).slice(0,2).forEach((l,k)=>ctx.fillText(l,x+sw/2,y+sh+38+k*32));
+    ctx.textAlign="left";
+  });
+  // 바닥 안내
+  const by=top+3*rowH-4;
+  ctx.fillStyle=C.white;rr(ctx,M,by,W-2*M,96,30);ctx.fill();
+  ctx.font="34px "+F;ctx.fillStyle=C.green;ctx.textAlign="center";ctx.fillText("토끼발 상영회에서 만나요!",W/2,by+48);
+  ctx.font="24px "+F;ctx.fillStyle="rgba(37,40,32,.6)";ctx.fillText("영화감상시그 토끼발 · 시그장 박설 제작",W/2,by+82);
+  ctx.textAlign="left";
+  return c;
+}
 document.getElementById("saveBtn").addEventListener("click",async()=>{
-  if(!window.html2canvas){alertBox("이미지 저장 도구를 불러오지 못했어요. 화면을 캡처해 주세요.");return;}
   const btn=document.getElementById("saveBtn");btn.disabled=true;btn.textContent="만드는 중…";
+  shotBody.innerHTML="";
   try{
-    const canvas=await html2canvas(document.getElementById("sheet"),{
-      scale:Math.min(3,window.devicePixelRatio||2),useCORS:true,
-      backgroundColor:"#F7F3E9"
-    });
-    const data=canvas.toDataURL("image/png");
-    shotBody.innerHTML='<p>이미지를 길게 눌러 사진에 저장하세요</p>';
-    const im=new Image();im.src=data;im.alt="완성된 영화 취향표";shotBody.appendChild(im);
-    const a=document.createElement("a");a.href=data;a.download="영화취향표.png";a.className="btn primary";
-    a.style.cssText="display:block;margin-top:10px;text-decoration:none";a.textContent="파일로 내려받기";shotBody.appendChild(a);
+    const canvas=await drawChart();
+    const blob=await new Promise((res,rej)=>canvas.toBlob(b=>b?res(b):rej(new Error("blob")),"image/png"));
+    const url=URL.createObjectURL(blob);
+    const p=document.createElement("p");p.textContent="이미지를 길게 눌러 ‘사진에 저장’ 하세요";shotBody.appendChild(p);
+    const im=new Image();im.src=url;im.alt="완성된 영화 취향표";shotBody.appendChild(im);
+    const file=new File([blob],"토끼발-영화취향표.png",{type:"image/png"});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      const sb=document.createElement("button");sb.type="button";sb.className="btn primary";sb.style.cssText="width:100%;margin-top:10px";
+      sb.textContent="공유하기 · 사진에 저장";
+      sb.addEventListener("click",()=>navigator.share({files:[file],title:"토끼발 영화 취향표"}).catch(()=>{}));
+      shotBody.appendChild(sb);
+    }else{
+      const a=document.createElement("a");a.href=url;a.download="토끼발-영화취향표.png";a.className="btn primary";
+      a.style.cssText="display:block;margin-top:10px;text-decoration:none;text-align:center";a.textContent="파일로 내려받기";shotBody.appendChild(a);
+    }
   }catch(e){
-    shotBody.innerHTML='<p>이미지를 만들지 못했어요. 이 화면을 캡처해서 저장해 주세요.</p>';
+    const p=document.createElement("p");p.textContent="이미지를 만들지 못했어요. 화면을 캡처해서 저장해 주세요.";shotBody.appendChild(p);
   }
   shotPanel.hidden=false;scrim2.hidden=false;document.body.style.overflow="hidden";
   btn.disabled=false;btn.textContent="이미지로 저장";
 });
-function alertBox(msg){shotBody.innerHTML="<p></p>";shotBody.firstChild.textContent=msg;shotPanel.hidden=false;scrim2.hidden=false;}
 
 /* ---------- 토끼 움찔 ---------- */
 const desk=document.getElementById("desk");
