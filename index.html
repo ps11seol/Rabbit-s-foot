@@ -6,165 +6,190 @@
 <title>토끼발 영화 취향표</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Fredoka:wght@400;500&display=swap">
+<meta name="theme-color" content="#101937">
 <style>
-/* Layout: 한밤의 필름 카드(달·별·토끼) 3×3 포스터 칸 + 아래에서 올라오는 검색 시트. 밤 테마 단일 디자인 */
+@font-face{font-family:"LeeSeoyun";font-display:swap;
+  src:url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/LeeSeoyun.woff") format("woff");}
+/* Layout: 머뭇 유니버스 톤 — 깊은 남색 우주, 작은 놀이 행성 위 클레이 토끼, 번호 붙은 9개의 문(포스터 칸) */
 :root{
-  --night:#0d1233;        /* 밤하늘 */
-  --night2:#1b2160;       /* 지평선 쪽 밤 */
-  --card:#151b4a;         /* 취향표 카드 */
-  --ink:#f4efdc;          /* 달빛 글자 */
-  --muted:#a6acd8;        /* 보조 글자 */
-  --moon:#f7d978;         /* 달 — 포인트 */
-  --pink:#f5a8bf;         /* 토끼 귀 — 강조 */
-  --line:#2c3577;
-  --slot:#212a6b;
-  --sheet:#151b4a;
-  --display:"Do Hyeon","IBM Plex Sans KR",system-ui,sans-serif;
-  --body:"IBM Plex Sans KR",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --space:#101937;        /* 우주 남색 (mumut 테마색) */
+  --space2:#1a2552;
+  --clay:#f6f3ec;         /* 무광 클레이 화이트 */
+  --clay-shade:#dcd6c8;
+  --ink:#f6f3ec;          /* 글자 */
+  --ink-dark:#101937;
+  --muted:#9fa8cf;
+  --sun:#ffd66b;          /* 행성·달 포인트 */
+  --pink:#ff9fb5;         /* 토끼 귀 */
+  --card:#16214a;
+  --slot:#22306a;
+  --line:rgba(246,243,236,.14);
+  --hand:"LeeSeoyun","Gowun Dodum","Apple SD Gothic Neo",sans-serif;
+  --body:"Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --latin:"Fredoka","Gowun Dodum",system-ui,sans-serif;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{margin:0}
-body{color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;min-height:100vh;
+body{color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;min-height:100vh;
   background:
-    radial-gradient(1.2px 1.2px at 12% 8%,#fff 98%,transparent),
-    radial-gradient(1px 1px at 78% 4%,#fff 98%,transparent),
-    radial-gradient(1.4px 1.4px at 90% 22%,#fff 98%,transparent),
-    radial-gradient(1px 1px at 33% 15%,#fff 98%,transparent),
-    radial-gradient(1px 1px at 55% 30%,#fff 98%,transparent),
-    radial-gradient(1.3px 1.3px at 6% 40%,#fff 98%,transparent),
-    radial-gradient(1px 1px at 70% 55%,#fff 98%,transparent),
-    radial-gradient(1px 1px at 20% 70%,#fff 98%,transparent),
-    radial-gradient(1.2px 1.2px at 95% 75%,#fff 98%,transparent),
-    radial-gradient(1px 1px at 45% 88%,#fff 98%,transparent),
-    linear-gradient(180deg,var(--night) 0%,var(--night2) 100%) fixed;
-  background-color:var(--night);
+    radial-gradient(1.3px 1.3px at 9% 6%,#fff 98%,transparent),
+    radial-gradient(1px 1px at 81% 3%,#fff 98%,transparent),
+    radial-gradient(1.5px 1.5px at 93% 19%,#fff 98%,transparent),
+    radial-gradient(1px 1px at 30% 13%,#fff 98%,transparent),
+    radial-gradient(1px 1px at 58% 27%,#fff 98%,transparent),
+    radial-gradient(1.3px 1.3px at 4% 42%,#fff 98%,transparent),
+    radial-gradient(1px 1px at 73% 57%,#fff 98%,transparent),
+    radial-gradient(1px 1px at 18% 72%,#fff 98%,transparent),
+    radial-gradient(1.2px 1.2px at 96% 77%,#fff 98%,transparent),
+    radial-gradient(1px 1px at 47% 90%,#fff 98%,transparent),
+    radial-gradient(80% 50% at 85% 0%,rgba(120,140,255,.18),transparent 70%),
+    linear-gradient(180deg,var(--space) 0%,var(--space2) 100%) fixed;
+  background-color:var(--space);
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
-  padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(88px + env(safe-area-inset-bottom,0px));
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(92px + env(safe-area-inset-bottom,0px));
   -webkit-tap-highlight-color:transparent}
 .wrap{max-width:460px;margin:0 auto;padding-block:18px}
-.hint{margin:0 0 12px;color:var(--muted);font-size:13px;text-align:center}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.topbar .brand{font-family:var(--hand);font-size:20px}
+.topbar .tag{font-family:var(--latin);font-size:10.5px;letter-spacing:.22em;color:var(--muted)}
 
 /* 취향표 카드 */
-#sheet{background:
-    radial-gradient(1px 1px at 18% 6%,rgba(255,255,255,.8) 98%,transparent),
-    radial-gradient(1.2px 1.2px at 64% 3%,rgba(255,255,255,.8) 98%,transparent),
-    radial-gradient(1px 1px at 40% 11%,rgba(255,255,255,.7) 98%,transparent),
-    radial-gradient(120% 60% at 50% 0%,#232b78 0%,transparent 60%),
+#sheet{position:relative;overflow:hidden;border-radius:28px;padding:22px 16px 20px;
+  background:
+    radial-gradient(1px 1px at 22% 8%,rgba(255,255,255,.85) 98%,transparent),
+    radial-gradient(1.2px 1.2px at 48% 4%,rgba(255,255,255,.8) 98%,transparent),
+    radial-gradient(1px 1px at 8% 20%,rgba(255,255,255,.7) 98%,transparent),
+    radial-gradient(110% 55% at 100% 0%,#2a3a86 0%,transparent 62%),
     var(--card);
-  border-radius:20px;padding:24px 14px 18px;position:relative;overflow:hidden;
-  border:1px solid var(--line);box-shadow:0 20px 40px -20px rgba(0,0,0,.6)}
-#sheet::before,#sheet::after{content:"";position:absolute;left:14px;right:14px;height:7px;
-  background:radial-gradient(circle at 4px 3.5px,var(--night) 2.6px,transparent 3px) 0 0/14px 7px repeat-x}
-#sheet::before{top:7px}#sheet::after{bottom:7px}
-.moonart{position:absolute;top:14px;right:10px;width:92px;height:92px;pointer-events:none}
-.head{position:relative;padding-right:84px;padding-left:4px;min-height:82px}
-.club{font-family:var(--display);font-size:15px;color:var(--pink);letter-spacing:.04em}
-.title{font-family:var(--display);font-weight:400;font-size:31px;line-height:1.15;margin:2px 0 4px;color:var(--moon);text-wrap:balance}
-#chartTitle{display:block;width:100%;border:0;background:transparent;color:var(--ink);
-  font-family:var(--body);font-size:14px;font-weight:500;padding:2px 0;border-radius:6px}
-#chartTitle:focus{outline:2px dashed var(--pink);outline-offset:2px}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 10px;margin-top:14px}
-.cell{display:flex;flex-direction:column;gap:7px;min-width:0}
-.slot{appearance:none;border:0;padding:0;margin:0;width:100%;aspect-ratio:2/3;max-width:100%;border-radius:8px;
-  background:var(--slot);cursor:pointer;position:relative;overflow:hidden;color:var(--muted);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 24px 50px -24px rgba(0,0,0,.7)}
+.hero{position:relative;min-height:150px;padding-right:128px}
+.planet{position:absolute;top:-6px;right:-10px;width:150px;height:150px;pointer-events:none}
+.eyebrow{font-family:var(--latin);font-size:10.5px;letter-spacing:.24em;color:var(--sun);text-transform:uppercase;font-weight:500}
+.title{font-family:var(--hand);font-weight:400;font-size:34px;line-height:1.15;margin:6px 0 8px;color:var(--clay);text-wrap:balance}
+.title .br{color:var(--sun)}
+#chartTitle{display:block;width:100%;border:0;background:transparent;color:var(--muted);
+  font-family:var(--hand);font-size:16px;padding:2px 0;border-radius:6px}
+#chartTitle:focus{outline:2px dashed var(--pink);outline-offset:3px;color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 10px;margin-top:14px}
+.cell{display:flex;flex-direction:column;gap:8px;min-width:0}
+.slot{appearance:none;border:0;padding:0;margin:0;width:100%;aspect-ratio:2/3;max-width:100%;border-radius:16px;
+  background:linear-gradient(160deg,#2a3976,var(--slot));cursor:pointer;position:relative;overflow:hidden;color:var(--muted);
   display:flex;align-items:center;justify-content:center;font:inherit;
-  box-shadow:inset 0 0 0 1px rgba(247,217,120,.18)}
-.slot:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
-.slot .plus{width:36px;height:36px;display:grid;place-items:center;opacity:.75}
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.07),inset 0 -6px 12px rgba(0,0,0,.18),0 8px 16px -10px rgba(0,0,0,.6);
+  transition:transform .15s ease}
+.slot:active{transform:scale(.97)}
+.slot:focus-visible{outline:3px solid var(--pink);outline-offset:3px}
+.slot .num{position:absolute;top:7px;left:9px;font-family:var(--latin);font-size:10px;letter-spacing:.12em;color:var(--muted);z-index:1}
+.slot .plus{display:grid;place-items:center;opacity:.8}
 .slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.slot .tname{position:absolute;inset:auto 0 0 0;padding:16px 6px 6px;font-size:11px;line-height:1.3;color:#fff;
-  background:linear-gradient(transparent,rgba(0,0,0,.75));text-align:left;font-weight:500;
+.slot .tname{position:absolute;inset:auto 0 0 0;padding:18px 7px 7px;font-size:11px;line-height:1.3;color:#fff;
+  background:linear-gradient(transparent,rgba(0,0,0,.75));text-align:left;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.slot.textonly{background:var(--moon);color:var(--night);padding:10px;font-family:var(--display);font-size:16px;line-height:1.25;text-align:center}
-.label{font-size:12px;line-height:1.35;text-align:center;color:var(--ink);font-weight:500;word-break:keep-all;min-height:2.7em}
-.cell.rec .label{color:var(--moon)}
-.invite{margin-top:16px;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;
-  background:rgba(247,217,120,.1);border:1px dashed rgba(247,217,120,.45)}
+.slot.filled .num{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.slot.textonly{background:var(--clay);color:var(--ink-dark);padding:10px;font-family:var(--hand);font-size:17px;line-height:1.25;text-align:center}
+.label{font-family:var(--hand);font-size:14px;line-height:1.3;text-align:center;color:var(--ink);word-break:keep-all;min-height:2.6em}
+.cell.rec .label{color:var(--sun)}
+.invite{margin-top:18px;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:20px;
+  background:var(--clay);color:var(--ink-dark);box-shadow:inset 0 -4px 0 var(--clay-shade)}
 .invite svg{flex:none}
-.invite p{margin:0;word-break:keep-all;font-family:var(--display);font-size:16px;line-height:1.3;color:var(--moon)}
-.credit{margin-top:12px;text-align:center;font-size:11.5px;color:var(--muted);letter-spacing:.02em}
-.credit b{color:var(--ink);font-weight:500}
+.invite p{margin:0;word-break:keep-all;font-family:var(--hand);font-size:18px;line-height:1.3}
+.credit{margin-top:14px;text-align:center;font-family:var(--hand);font-size:14px;color:var(--muted)}
+.credit b{color:var(--ink);font-weight:400}
+.credit .en{display:block;font-family:var(--latin);font-size:9.5px;letter-spacing:.24em;margin-top:2px;opacity:.7}
 
 /* 하단 버튼 */
-.bar{position:fixed;left:0;right:0;bottom:0;display:flex;gap:8px;justify-content:center;
-  padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
-  background:linear-gradient(transparent,var(--night2) 35%)}
+.bar{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;
+  padding:14px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  background:linear-gradient(transparent,var(--space2) 40%)}
 .bar .in{display:flex;gap:8px;width:100%;max-width:460px}
-.btn{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);font:500 15px var(--body);
-  padding:13px 16px;border-radius:12px;cursor:pointer}
-.btn.primary{flex:1;background:var(--moon);border-color:var(--moon);color:var(--night);font-weight:700}
+.btn{appearance:none;border:0;background:var(--card);color:var(--ink);font:17px var(--hand);
+  padding:13px 18px;border-radius:999px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 0 0 1px var(--line)}
+.btn.primary{flex:1;background:var(--clay);color:var(--ink-dark);box-shadow:inset 0 -4px 0 var(--clay-shade),0 8px 18px -10px rgba(0,0,0,.6)}
+.btn:active{transform:translateY(1px)}
 .btn:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
 
 /* 검색 시트 */
-.scrim{position:fixed;inset:0;background:rgba(4,6,20,.6);z-index:20}
-.panel{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--sheet);border-radius:20px 20px 0 0;
-  border-top:1px solid var(--line);max-height:88vh;display:flex;flex-direction:column;
+.scrim{position:fixed;inset:0;background:rgba(5,8,24,.62);z-index:20}
+.panel{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--card);border-radius:28px 28px 0 0;
+  max-height:88vh;display:flex;flex-direction:column;box-shadow:0 -10px 40px rgba(0,0,0,.4);
   padding:10px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
-  animation:up .22s ease-out}
-@keyframes up{from{transform:translateY(30px);opacity:.6}to{transform:none;opacity:1}}
-@keyframes twinkle{0%,100%{opacity:1}50%{opacity:.55}}
-.moonart .tw{animation:twinkle 3s ease-in-out infinite}
-@media (prefers-reduced-motion:reduce){.panel,.moonart .tw{animation:none}}
+  animation:up .24s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes up{from{transform:translateY(40px);opacity:.5}to{transform:none;opacity:1}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.planet .bunny{animation:bob 3.2s ease-in-out infinite;transform-origin:center}
+@media (prefers-reduced-motion:reduce){.panel,.planet .bunny{animation:none}}
 .panel .inner{max-width:460px;width:100%;margin:0 auto;display:flex;flex-direction:column;min-height:0;flex:1}
-.grab{width:40px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 12px}
-.ptitle{font-family:var(--display);font-size:20px;margin:0 0 10px;color:var(--moon)}
+.grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 14px}
+.ptitle{font-family:var(--hand);font-weight:400;font-size:24px;margin:0 0 10px;color:var(--sun)}
 .search{display:flex;gap:8px}
-#q{flex:1;min-width:0;font:16px var(--body);padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--night);color:var(--ink)}
+#q{flex:1;min-width:0;font:16px var(--body);padding:13px 16px;border-radius:999px;border:0;background:var(--space);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
 #q::placeholder{color:var(--muted)}
-#q:focus{outline:none;border-color:var(--moon)}
-#status{font-size:13px;color:var(--muted);margin:10px 2px 6px;min-height:1.4em}
+#q:focus{outline:none;box-shadow:inset 0 0 0 2px var(--sun)}
+#status{font-size:13px;color:var(--muted);margin:10px 4px 6px;min-height:1.4em}
 #results{list-style:none;margin:0;padding:0;overflow-y:auto;flex:1;min-height:120px;-webkit-overflow-scrolling:touch}
 #results li button{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:none;border:0;
-  padding:8px 4px;border-bottom:1px solid var(--line);color:var(--ink);font:inherit;cursor:pointer}
+  padding:9px 6px;border-radius:14px;color:var(--ink);font:inherit;cursor:pointer}
+#results li button:active{background:var(--slot)}
 #results li button:focus-visible{outline:2px solid var(--pink)}
-#results img,#results .noimg{width:46px;aspect-ratio:2/3;border-radius:5px;object-fit:cover;background:var(--slot);flex:none}
+#results img,#results .noimg{width:46px;aspect-ratio:2/3;border-radius:8px;object-fit:cover;background:var(--slot);flex:none}
 #results .t{font-weight:700;font-size:15px;line-height:1.3}
 #results .m{font-size:12px;color:var(--muted)}
 .pactions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.pactions .btn{flex:1;font-size:14px;padding:11px 10px}
+.pactions .btn{flex:1;font-size:15px;padding:11px 10px;text-align:center}
 .danger{color:var(--pink)}
 
 /* 저장 미리보기 */
 #shotWrap{text-align:center}
-#shotWrap img{width:100%;border-radius:12px;border:1px solid var(--line)}
+#shotWrap img{width:100%;border-radius:18px}
 #shotWrap p{color:var(--muted);font-size:13px}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <p class="hint">칸을 눌러 영화를 골라요 · 이미지로 저장해서 공유해요</p>
+  <div class="topbar">
+    <span class="brand">토끼발</span>
+    <span class="tag">MOVIE TASTE · NINE FRAMES</span>
+  </div>
 
   <section id="sheet" aria-label="토끼발 영화 취향표">
-    <svg class="moonart" viewBox="0 0 92 92" aria-hidden="true">
-      <circle cx="50" cy="44" r="34" fill="#f7d978" opacity=".12"/>
-      <circle cx="50" cy="44" r="26" fill="#f7d978"/>
-      <circle cx="40" cy="36" r="4" fill="#e9c35c"/><circle cx="58" cy="54" r="5.5" fill="#e9c35c"/><circle cx="60" cy="33" r="2.5" fill="#e9c35c"/>
-      <!-- 달 위에 앉은 토끼 실루엣 -->
-      <g fill="#151b4a">
-        <ellipse cx="30" cy="70" rx="11" ry="8.5"/>
-        <circle cx="21" cy="61" r="6"/>
-        <ellipse cx="18" cy="49" rx="2.4" ry="8" transform="rotate(-12 18 49)"/>
-        <ellipse cx="23.5" cy="48.5" rx="2.4" ry="8.5" transform="rotate(8 23.5 48.5)"/>
-        <circle cx="41" cy="69" r="3"/>
+    <svg class="planet" viewBox="0 0 150 150" aria-hidden="true">
+      <defs>
+        <radialGradient id="pl" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#ffe7a3"/><stop offset=".6" stop-color="#ffd66b"/><stop offset="1" stop-color="#e9a94a"/></radialGradient>
+        <radialGradient id="cl" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#ffffff"/><stop offset=".7" stop-color="#f6f3ec"/><stop offset="1" stop-color="#d6cfbf"/></radialGradient>
+      </defs>
+      <circle cx="80" cy="102" r="40" fill="url(#pl)"/>
+      <circle cx="66" cy="110" r="5" fill="#e3a447" opacity=".7"/><circle cx="96" cy="118" r="7" fill="#e3a447" opacity=".6"/><circle cx="98" cy="92" r="3" fill="#e3a447" opacity=".6"/>
+      <ellipse cx="80" cy="104" rx="60" ry="11" fill="none" stroke="#ff9fb5" stroke-width="3" opacity=".75" transform="rotate(-14 80 104)"/>
+      <g class="bunny">
+        <ellipse cx="62" cy="54" rx="6" ry="17" fill="url(#cl)" transform="rotate(-14 62 54)"/>
+        <ellipse cx="62" cy="55" rx="2.6" ry="11" fill="#ff9fb5" transform="rotate(-14 62 55)"/>
+        <ellipse cx="78" cy="51" rx="6" ry="17" fill="url(#cl)" transform="rotate(10 78 51)"/>
+        <ellipse cx="78" cy="52" rx="2.6" ry="11" fill="#ff9fb5" transform="rotate(10 78 52)"/>
+        <ellipse cx="72" cy="86" rx="17" ry="14" fill="url(#cl)"/>
+        <circle cx="70" cy="72" r="14" fill="url(#cl)"/>
+        <circle cx="65" cy="71" r="1.8" fill="#101937"/><circle cx="75" cy="71" r="1.8" fill="#101937"/>
+        <ellipse cx="70" cy="76" rx="2" ry="1.4" fill="#ff9fb5"/>
+        <circle cx="61" cy="76" r="2.6" fill="#ff9fb5" opacity=".45"/><circle cx="79" cy="76" r="2.6" fill="#ff9fb5" opacity=".45"/>
       </g>
-      <g class="tw" fill="#fff"><circle cx="10" cy="14" r="1.4"/><circle cx="84" cy="80" r="1.2"/><circle cx="86" cy="10" r="1"/></g>
+      <g fill="#fff"><circle cx="18" cy="24" r="1.6"/><circle cx="132" cy="22" r="1.2"/><circle cx="140" cy="60" r="1"/><path d="M28 70l1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5z" fill="#ffd66b"/></g>
     </svg>
-    <div class="head">
-      <div class="club">영화감상시그 토끼발</div>
-      <h1 class="title">&lt;토끼발&gt;<br>영화 취향표</h1>
+    <div class="hero">
+      <div class="eyebrow">One rabbit night</div>
+      <h1 class="title"><span class="br">&lt;토끼발&gt;</span><br>영화 취향표</h1>
       <input id="chartTitle" maxlength="24" value="나는 영화가 너무너무 좋다" aria-label="한 줄 소개 (눌러서 바꾸기)">
     </div>
     <div class="grid" id="grid"></div>
     <div class="invite">
-      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
-        <path d="M21 4a11 11 0 1 0 5 20.6A12 12 0 0 1 21 4z" fill="#f7d978"/>
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+        <circle cx="17" cy="17" r="16" fill="#101937"/>
+        <path d="M21 8a9.5 9.5 0 1 0 5 17.6A10.5 10.5 0 0 1 21 8z" fill="#ffd66b"/>
       </svg>
       <p>추천영화는 토끼발 상영회에서 만나요!</p>
     </div>
-    <div class="credit">영화감상시그 토끼발 · <b>시그장 박설</b> 제작</div>
+    <div class="credit">영화감상시그 토끼발 · <b>시그장 박설</b> 제작<span class="en">TOKKIBAL MOVIE SIG</span></div>
   </section>
 </div>
 
@@ -225,11 +250,11 @@ function render(){
   LABELS.forEach((label,i)=>{
     const cell=document.createElement("div");cell.className="cell"+(i===8?" rec":"");
     const b=document.createElement("button");b.type="button";b.className="slot";
-    const m=state.slots[i];
+    const m=state.slots[i];const num=String(i+1).padStart(2,"0");
     if(m&&m.img){
       const img=document.createElement("img");img.src=m.img;img.alt=m.title||"";img.loading="lazy";
       img.onerror=()=>{b.classList.add("textonly");img.remove();};
-      b.appendChild(img);
+      b.appendChild(img);b.classList.add("filled");
       if(m.title){const t=document.createElement("span");t.className="tname";t.textContent=m.title;b.appendChild(t);}
       b.setAttribute("aria-label",label+": "+(m.title||"내 사진")+" (바꾸기)");
     }else if(m&&m.title){
@@ -240,6 +265,7 @@ function render(){
       b.setAttribute("aria-label",label+" 고르기");
     }
     b.addEventListener("click",()=>openPanel(i));
+    if(!b.classList.contains("textonly")){const n=document.createElement("span");n.className="num";n.textContent=num;b.prepend(n);}
     const l=document.createElement("div");l.className="label";l.textContent=label;
     cell.append(b,l);grid.appendChild(cell);
   });
@@ -368,7 +394,7 @@ document.getElementById("saveBtn").addEventListener("click",async()=>{
   try{
     const canvas=await html2canvas(document.getElementById("sheet"),{
       scale:Math.min(3,window.devicePixelRatio||2),useCORS:true,
-      backgroundColor:"#0d1233"
+      backgroundColor:"#101937"
     });
     const data=canvas.toDataURL("image/png");
     shotBody.innerHTML='<p>이미지를 길게 눌러 사진에 저장하세요</p>';
