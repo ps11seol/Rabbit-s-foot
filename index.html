@@ -198,11 +198,10 @@ body{color:var(--mug);font-family:var(--hand);font-size:14px;line-height:1.5;min
 
     <section class="ai" aria-labelledby="aiTitle">
       <h2 id="aiTitle">ChatGPT로 내 취향 분석하기</h2>
-      <p class="ai-sub">토끼발 분석가 프롬프트에 내가 고른 영화가 연도·감독까지 붙어서 들어가요. 버튼 한 번이면 복사되고 ChatGPT가 열려요.</p>
+      <p class="ai-sub">내가 고른 영화가 담긴 분석 프롬프트예요. 복사해서 ChatGPT에 붙여넣어 보세요!</p>
       <div class="ai-cap">프롬프트에 들어갈 내 영화</div><pre class="ai-box" id="promptBox" tabindex="0" aria-label="프롬프트에 들어갈 영화 목록"></pre>
       <div class="ai-actions">
-        <button type="button" class="btn primary" id="copyPrompt">복사하고 ChatGPT 열기</button>
-        <button type="button" class="btn" id="copyOnly">복사만</button>
+        <button type="button" class="btn primary" id="copyPrompt">프롬프트 복사하기</button>
       </div>
       <p class="ai-note" id="copyNote" role="status"></p>
       <pre class="ai-box" id="fullPrompt" hidden></pre>
@@ -1070,8 +1069,7 @@ function copyPromptText(openGPT){
   if(openGPT)window.open("https://chatgpt.com/","_blank","noopener");
 }
 function showFull(){const f=document.getElementById("fullPrompt");f.textContent=buildPrompt();f.hidden=false;}
-document.getElementById("copyPrompt").addEventListener("click",()=>copyPromptText(true));
-document.getElementById("copyOnly").addEventListener("click",()=>copyPromptText(false));
+document.getElementById("copyPrompt").addEventListener("click",()=>copyPromptText(false));
 
 /* ---------- 아래로 더 있어요 표시 ---------- */
 const cue=document.getElementById("cue"),aiSec=document.querySelector(".ai");
