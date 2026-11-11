@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>토끼발 영화 취향표</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: 한밤의 필름 카드(달·별·토끼) 3×3 포스터 칸 + 아래에서 올라오는 검색 시트. 밤 테마 단일 디자인 */
+:root{
+  --night:#0d1233;        /* 밤하늘 */
+  --night2:#1b2160;       /* 지평선 쪽 밤 */
+  --card:#151b4a;         /* 취향표 카드 */
+  --ink:#f4efdc;          /* 달빛 글자 */
+  --muted:#a6acd8;        /* 보조 글자 */
+  --moon:#f7d978;         /* 달 — 포인트 */
+  --pink:#f5a8bf;         /* 토끼 귀 — 강조 */
+  --line:#2c3577;
+  --slot:#212a6b;
+  --sheet:#151b4a;
+  --display:"Do Hyeon","IBM Plex Sans KR",system-ui,sans-serif;
+  --body:"IBM Plex Sans KR",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;min-height:100vh;
+  background:
+    radial-gradient(1.2px 1.2px at 12% 8%,#fff 98%,transparent),
+    radial-gradient(1px 1px at 78% 4%,#fff 98%,transparent),
+    radial-gradient(1.4px 1.4px at 90% 22%,#fff 98%,transparent),
+    radial-gradient(1px 1px at 33% 15%,#fff 98%,transparent),
+    radial-gradient(1px 1px at 55% 30%,#fff 98%,transparent),
+    radial-gradient(1.3px 1.3px at 6% 40%,#fff 98%,transparent),
+    radial-gradient(1px 1px at 70% 55%,#fff 98%,transparent),
+    radial-gradient(1px 1px at 20% 70%,#fff 98%,transparent),
+    radial-gradient(1.2px 1.2px at 95% 75%,#fff 98%,transparent),
+    radial-gradient(1px 1px at 45% 88%,#fff 98%,transparent),
+    linear-gradient(180deg,var(--night) 0%,var(--night2) 100%) fixed;
+  background-color:var(--night);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(88px + env(safe-area-inset-bottom,0px));
+  -webkit-tap-highlight-color:transparent}
+.wrap{max-width:460px;margin:0 auto;padding-block:18px}
+.hint{margin:0 0 12px;color:var(--muted);font-size:13px;text-align:center}
+
+/* 취향표 카드 */
+#sheet{background:
+    radial-gradient(1px 1px at 18% 6%,rgba(255,255,255,.8) 98%,transparent),
+    radial-gradient(1.2px 1.2px at 64% 3%,rgba(255,255,255,.8) 98%,transparent),
+    radial-gradient(1px 1px at 40% 11%,rgba(255,255,255,.7) 98%,transparent),
+    radial-gradient(120% 60% at 50% 0%,#232b78 0%,transparent 60%),
+    var(--card);
+  border-radius:20px;padding:24px 14px 18px;position:relative;overflow:hidden;
+  border:1px solid var(--line);box-shadow:0 20px 40px -20px rgba(0,0,0,.6)}
+#sheet::before,#sheet::after{content:"";position:absolute;left:14px;right:14px;height:7px;
+  background:radial-gradient(circle at 4px 3.5px,var(--night) 2.6px,transparent 3px) 0 0/14px 7px repeat-x}
+#sheet::before{top:7px}#sheet::after{bottom:7px}
+.moonart{position:absolute;top:14px;right:10px;width:92px;height:92px;pointer-events:none}
+.head{position:relative;padding-right:84px;padding-left:4px;min-height:82px}
+.club{font-family:var(--display);font-size:15px;color:var(--pink);letter-spacing:.04em}
+.title{font-family:var(--display);font-weight:400;font-size:31px;line-height:1.15;margin:2px 0 4px;color:var(--moon);text-wrap:balance}
+#chartTitle{display:block;width:100%;border:0;background:transparent;color:var(--ink);
+  font-family:var(--body);font-size:14px;font-weight:500;padding:2px 0;border-radius:6px}
+#chartTitle:focus{outline:2px dashed var(--pink);outline-offset:2px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 10px;margin-top:14px}
+.cell{display:flex;flex-direction:column;gap:7px;min-width:0}
+.slot{appearance:none;border:0;padding:0;margin:0;width:100%;aspect-ratio:2/3;max-width:100%;border-radius:8px;
+  background:var(--slot);cursor:pointer;position:relative;overflow:hidden;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;font:inherit;
+  box-shadow:inset 0 0 0 1px rgba(247,217,120,.18)}
+.slot:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.slot .plus{width:36px;height:36px;display:grid;place-items:center;opacity:.75}
+.slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.slot .tname{position:absolute;inset:auto 0 0 0;padding:16px 6px 6px;font-size:11px;line-height:1.3;color:#fff;
+  background:linear-gradient(transparent,rgba(0,0,0,.75));text-align:left;font-weight:500;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.slot.textonly{background:var(--moon);color:var(--night);padding:10px;font-family:var(--display);font-size:16px;line-height:1.25;text-align:center}
+.label{font-size:12px;line-height:1.35;text-align:center;color:var(--ink);font-weight:500;word-break:keep-all;min-height:2.7em}
+.cell.rec .label{color:var(--moon)}
+.invite{margin-top:16px;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;
+  background:rgba(247,217,120,.1);border:1px dashed rgba(247,217,120,.45)}
+.invite svg{flex:none}
+.invite p{margin:0;word-break:keep-all;font-family:var(--display);font-size:16px;line-height:1.3;color:var(--moon)}
+.credit{margin-top:12px;text-align:center;font-size:11.5px;color:var(--muted);letter-spacing:.02em}
+.credit b{color:var(--ink);font-weight:500}
+
+/* 하단 버튼 */
+.bar{position:fixed;left:0;right:0;bottom:0;display:flex;gap:8px;justify-content:center;
+  padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  background:linear-gradient(transparent,var(--night2) 35%)}
+.bar .in{display:flex;gap:8px;width:100%;max-width:460px}
+.btn{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);font:500 15px var(--body);
+  padding:13px 16px;border-radius:12px;cursor:pointer}
+.btn.primary{flex:1;background:var(--moon);border-color:var(--moon);color:var(--night);font-weight:700}
+.btn:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+
+/* 검색 시트 */
+.scrim{position:fixed;inset:0;background:rgba(4,6,20,.6);z-index:20}
+.panel{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--sheet);border-radius:20px 20px 0 0;
+  border-top:1px solid var(--line);max-height:88vh;display:flex;flex-direction:column;
+  padding:10px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(30px);opacity:.6}to{transform:none;opacity:1}}
+@keyframes twinkle{0%,100%{opacity:1}50%{opacity:.55}}
+.moonart .tw{animation:twinkle 3s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.panel,.moonart .tw{animation:none}}
+.panel .inner{max-width:460px;width:100%;margin:0 auto;display:flex;flex-direction:column;min-height:0;flex:1}
+.grab{width:40px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 12px}
+.ptitle{font-family:var(--display);font-size:20px;margin:0 0 10px;color:var(--moon)}
+.search{display:flex;gap:8px}
+#q{flex:1;min-width:0;font:16px var(--body);padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--night);color:var(--ink)}
+#q::placeholder{color:var(--muted)}
+#q:focus{outline:none;border-color:var(--moon)}
+#status{font-size:13px;color:var(--muted);margin:10px 2px 6px;min-height:1.4em}
+#results{list-style:none;margin:0;padding:0;overflow-y:auto;flex:1;min-height:120px;-webkit-overflow-scrolling:touch}
+#results li button{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:none;border:0;
+  padding:8px 4px;border-bottom:1px solid var(--line);color:var(--ink);font:inherit;cursor:pointer}
+#results li button:focus-visible{outline:2px solid var(--pink)}
+#results img,#results .noimg{width:46px;aspect-ratio:2/3;border-radius:5px;object-fit:cover;background:var(--slot);flex:none}
+#results .t{font-weight:700;font-size:15px;line-height:1.3}
+#results .m{font-size:12px;color:var(--muted)}
+.pactions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.pactions .btn{flex:1;font-size:14px;padding:11px 10px}
+.danger{color:var(--pink)}
+
+/* 저장 미리보기 */
+#shotWrap{text-align:center}
+#shotWrap img{width:100%;border-radius:12px;border:1px solid var(--line)}
+#shotWrap p{color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="hint">칸을 눌러 영화를 골라요 · 이미지로 저장해서 공유해요</p>
+
+  <section id="sheet" aria-label="토끼발 영화 취향표">
+    <svg class="moonart" viewBox="0 0 92 92" aria-hidden="true">
+      <circle cx="50" cy="44" r="34" fill="#f7d978" opacity=".12"/>
+      <circle cx="50" cy="44" r="26" fill="#f7d978"/>
+      <circle cx="40" cy="36" r="4" fill="#e9c35c"/><circle cx="58" cy="54" r="5.5" fill="#e9c35c"/><circle cx="60" cy="33" r="2.5" fill="#e9c35c"/>
+      <!-- 달 위에 앉은 토끼 실루엣 -->
+      <g fill="#151b4a">
+        <ellipse cx="30" cy="70" rx="11" ry="8.5"/>
+        <circle cx="21" cy="61" r="6"/>
+        <ellipse cx="18" cy="49" rx="2.4" ry="8" transform="rotate(-12 18 49)"/>
+        <ellipse cx="23.5" cy="48.5" rx="2.4" ry="8.5" transform="rotate(8 23.5 48.5)"/>
+        <circle cx="41" cy="69" r="3"/>
+      </g>
+      <g class="tw" fill="#fff"><circle cx="10" cy="14" r="1.4"/><circle cx="84" cy="80" r="1.2"/><circle cx="86" cy="10" r="1"/></g>
+    </svg>
+    <div class="head">
+      <div class="club">영화감상시그 토끼발</div>
+      <h1 class="title">&lt;토끼발&gt;<br>영화 취향표</h1>
+      <input id="chartTitle" maxlength="24" value="나는 영화가 너무너무 좋다" aria-label="한 줄 소개 (눌러서 바꾸기)">
+    </div>
+    <div class="grid" id="grid"></div>
+    <div class="invite">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+        <path d="M21 4a11 11 0 1 0 5 20.6A12 12 0 0 1 21 4z" fill="#f7d978"/>
+      </svg>
+      <p>추천영화는 토끼발 상영회에서 만나요!</p>
+    </div>
+    <div class="credit">영화감상시그 토끼발 · <b>시그장 박설</b> 제작</div>
+  </section>
+</div>
+
+<div class="bar"><div class="in">
+  <button class="btn" id="resetBtn" type="button">비우기</button>
+  <button class="btn primary" id="saveBtn" type="button">이미지로 저장</button>
+</div></div>
+
+<!-- 검색 시트 -->
+<div class="scrim" id="scrim" hidden></div>
+<div class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="ptitle" hidden>
+  <div class="inner">
+    <div class="grab"></div>
+    <h2 class="ptitle" id="ptitle">영화 고르기</h2>
+    <div class="search">
+      <input id="q" type="search" placeholder="영화 제목을 대충 적어도 돼요" autocomplete="off" enterkeyhint="search">
+    </div>
+    <div id="status"></div>
+    <ul id="results"></ul>
+    <div class="pactions">
+      <button class="btn" id="useText" type="button">제목만 넣기</button>
+      <label class="btn" style="text-align:center" for="upload">내 사진으로</label>
+      <input id="upload" type="file" accept="image/*" hidden>
+      <button class="btn danger" id="clearSlot" type="button">이 칸 비우기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 저장 미리보기 -->
+<div class="scrim" id="scrim2" hidden></div>
+<div class="panel" id="shotPanel" role="dialog" aria-modal="true" aria-label="저장할 이미지" hidden>
+  <div class="inner" id="shotWrap">
+    <div class="grab"></div>
+    <div id="shotBody"></div>
+    <button class="btn" id="closeShot" type="button" style="width:100%;margin-top:8px">닫기</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+const LABELS=[
+  "대외적 최애 영화","남들에게 말 안하는 최애 영화","나만 좋아할 것 같은 영화",
+  "제일 많이 다시 본 영화","한때 최애 영화","내 인생이 담겨있는 영화",
+  "이 영화처럼 살고 싶다","최근에 발견한 명작","지금 사람들한테 추천할 영화"
+];
+const KEY="tokkibal-taste-v1";
+let state={title:"나는 영화가 너무너무 좋다",slots:Array(9).fill(null)};
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&Array.isArray(s.slots))state=s;}catch(e){}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+const grid=document.getElementById("grid");
+const titleEl=document.getElementById("chartTitle");
+titleEl.value=state.title;
+titleEl.addEventListener("input",()=>{state.title=titleEl.value;persist();});
+
+function render(){
+  grid.innerHTML="";
+  LABELS.forEach((label,i)=>{
+    const cell=document.createElement("div");cell.className="cell"+(i===8?" rec":"");
+    const b=document.createElement("button");b.type="button";b.className="slot";
+    const m=state.slots[i];
+    if(m&&m.img){
+      const img=document.createElement("img");img.src=m.img;img.alt=m.title||"";img.loading="lazy";
+      img.onerror=()=>{b.classList.add("textonly");img.remove();};
+      b.appendChild(img);
+      if(m.title){const t=document.createElement("span");t.className="tname";t.textContent=m.title;b.appendChild(t);}
+      b.setAttribute("aria-label",label+": "+(m.title||"내 사진")+" (바꾸기)");
+    }else if(m&&m.title){
+      b.classList.add("textonly");b.textContent=m.title;
+      b.setAttribute("aria-label",label+": "+m.title+" (바꾸기)");
+    }else{
+      b.innerHTML='<span class="plus" aria-hidden="true"><svg width="30" height="36" viewBox="0 0 30 36"><ellipse cx="10" cy="9" rx="3" ry="8" fill="currentColor" opacity=".5"/><ellipse cx="20" cy="9" rx="3" ry="8" fill="currentColor" opacity=".5"/><circle cx="15" cy="25" r="10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="3 3"/><path d="M15 20v10M10 25h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>';
+      b.setAttribute("aria-label",label+" 고르기");
+    }
+    b.addEventListener("click",()=>openPanel(i));
+    const l=document.createElement("div");l.className="label";l.textContent=label;
+    cell.append(b,l);grid.appendChild(cell);
+  });
+}
+
+/* ---------- 영화 검색 (iTunes 영화 DB, 키 불필요) ---------- */
+let jsonpN=0;
+function jsonp(url,ms=8000){
+  return new Promise((res,rej)=>{
+    const cb="__mv"+(++jsonpN)+Date.now();
+    const s=document.createElement("script");
+    const done=()=>{delete window[cb];s.remove();clearTimeout(t);};
+    const t=setTimeout(()=>{done();rej(new Error("timeout"));},ms);
+    window[cb]=d=>{done();res(d);};
+    s.onerror=()=>{done();rej(new Error("load"));};
+    s.src=url+"&callback="+cb;document.head.appendChild(s);
+  });
+}
+async function searchMovies(term){
+  const base="https://itunes.apple.com/search?media=movie&entity=movie&limit=25&term="+encodeURIComponent(term);
+  const [kr,us]=await Promise.allSettled([
+    jsonp(base+"&country=KR&lang=ko_kr"),
+    jsonp(base+"&country=US")
+  ]);
+  const out=[],seen=new Set();
+  for(const r of [kr,us]){
+    if(r.status!=="fulfilled"||!r.value||!r.value.results)continue;
+    for(const x of r.value.results){
+      const key=(x.trackName||"")+"|"+(x.releaseDate||"").slice(0,4);
+      if(seen.has(key))continue;seen.add(key);
+      out.push({
+        title:x.trackName,
+        year:(x.releaseDate||"").slice(0,4),
+        director:x.artistName||"",
+        img:x.artworkUrl100?x.artworkUrl100.replace(/\/\d+x\d+bb\./,"/400x600bb."):null
+      });
+    }
+  }
+  if(kr.status==="rejected"&&us.status==="rejected")throw new Error("network");
+  return out;
+}
+
+/* ---------- 패널 ---------- */
+const panel=document.getElementById("panel"),scrim=document.getElementById("scrim");
+const q=document.getElementById("q"),results=document.getElementById("results"),statusEl=document.getElementById("status");
+const ptitle=document.getElementById("ptitle");
+let current=-1,timer=null,seq=0;
+
+function openPanel(i){
+  current=i;ptitle.textContent=LABELS[i];
+  q.value="";results.innerHTML="";statusEl.textContent="제목 일부만 적어도 찾아줘요. 한글·영어 둘 다 돼요.";
+  panel.hidden=false;scrim.hidden=false;document.body.style.overflow="hidden";
+  setTimeout(()=>q.focus(),60);
+}
+function closePanel(){panel.hidden=true;scrim.hidden=true;document.body.style.overflow="";current=-1;}
+scrim.addEventListener("click",closePanel);
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closePanel();closeShot();}});
+
+q.addEventListener("input",()=>{
+  clearTimeout(timer);
+  const term=q.value.trim();
+  if(term.length<1){results.innerHTML="";statusEl.textContent="";return;}
+  statusEl.textContent="찾는 중…";
+  timer=setTimeout(()=>run(term),350);
+});
+q.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();clearTimeout(timer);const t=q.value.trim();if(t)run(t);}});
+
+async function run(term){
+  const my=++seq;
+  try{
+    const list=await searchMovies(term);
+    if(my!==seq)return;
+    results.innerHTML="";
+    if(!list.length){statusEl.textContent="찾는 영화가 없어요. 다르게 적어보거나 ‘제목만 넣기’를 눌러요.";return;}
+    statusEl.textContent=list.length+"편 찾았어요";
+    for(const m of list){
+      const li=document.createElement("li");const b=document.createElement("button");b.type="button";
+      if(m.img){const im=document.createElement("img");im.src=m.img.replace("400x600bb","100x150bb");im.alt="";im.loading="lazy";b.appendChild(im);}
+      else{const d=document.createElement("div");d.className="noimg";b.appendChild(d);}
+      const tx=document.createElement("div");
+      const t=document.createElement("div");t.className="t";t.textContent=m.title;
+      const mm=document.createElement("div");mm.className="m";mm.textContent=[m.year,m.director].filter(Boolean).join(" · ");
+      tx.append(t,mm);b.appendChild(tx);
+      b.addEventListener("click",()=>pick({title:m.title,img:m.img,year:m.year}));
+      li.appendChild(b);results.appendChild(li);
+    }
+  }catch(e){
+    if(my!==seq)return;
+    statusEl.textContent="검색 서버에 연결하지 못했어요. 인터넷 연결을 확인하거나 ‘제목만 넣기’를 써요.";
+  }
+}
+function pick(m){if(current<0)return;state.slots[current]=m;persist();render();closePanel();}
+document.getElementById("useText").addEventListener("click",()=>{
+  const t=q.value.trim();if(!t){statusEl.textContent="먼저 제목을 적어주세요.";q.focus();return;}
+  pick({title:t,img:null});
+});
+document.getElementById("clearSlot").addEventListener("click",()=>{if(current<0)return;state.slots[current]=null;persist();render();closePanel();});
+document.getElementById("upload").addEventListener("change",e=>{
+  const f=e.target.files&&e.target.files[0];if(!f)return;
+  const img=new Image();const url=URL.createObjectURL(f);
+  img.onload=()=>{ // 작게 줄여서 저장
+    const w=400,h=600,c=document.createElement("canvas");c.width=w;c.height=h;
+    const r=Math.max(w/img.width,h/img.height),dw=img.width*r,dh=img.height*r;
+    c.getContext("2d").drawImage(img,(w-dw)/2,(h-dh)/2,dw,dh);URL.revokeObjectURL(url);
+    pick({title:q.value.trim()||"",img:c.toDataURL("image/jpeg",.82)});e.target.value="";
+  };
+  img.src=url;
+});
+
+/* ---------- 비우기 ---------- */
+const resetBtn=document.getElementById("resetBtn");let armed=false,armT;
+resetBtn.addEventListener("click",()=>{
+  if(!armed){armed=true;resetBtn.textContent="한 번 더";armT=setTimeout(()=>{armed=false;resetBtn.textContent="비우기";},2500);return;}
+  clearTimeout(armT);armed=false;resetBtn.textContent="비우기";
+  state.slots=Array(9).fill(null);persist();render();
+});
+
+/* ---------- 이미지 저장 ---------- */
+const shotPanel=document.getElementById("shotPanel"),scrim2=document.getElementById("scrim2"),shotBody=document.getElementById("shotBody");
+function closeShot(){shotPanel.hidden=true;scrim2.hidden=true;document.body.style.overflow="";}
+scrim2.addEventListener("click",closeShot);
+document.getElementById("closeShot").addEventListener("click",closeShot);
+document.getElementById("saveBtn").addEventListener("click",async()=>{
+  if(!window.html2canvas){alertBox("이미지 저장 도구를 불러오지 못했어요. 화면을 캡처해 주세요.");return;}
+  const btn=document.getElementById("saveBtn");btn.disabled=true;btn.textContent="만드는 중…";
+  try{
+    const canvas=await html2canvas(document.getElementById("sheet"),{
+      scale:Math.min(3,window.devicePixelRatio||2),useCORS:true,
+      backgroundColor:"#0d1233"
+    });
+    const data=canvas.toDataURL("image/png");
+    shotBody.innerHTML='<p>이미지를 길게 눌러 사진에 저장하세요</p>';
+    const im=new Image();im.src=data;im.alt="완성된 영화 취향표";shotBody.appendChild(im);
+    const a=document.createElement("a");a.href=data;a.download="영화취향표.png";a.className="btn primary";
+    a.style.cssText="display:block;margin-top:10px;text-decoration:none";a.textContent="파일로 내려받기";shotBody.appendChild(a);
+  }catch(e){
+    shotBody.innerHTML='<p>이미지를 만들지 못했어요. 이 화면을 캡처해서 저장해 주세요.</p>';
+  }
+  shotPanel.hidden=false;scrim2.hidden=false;document.body.style.overflow="hidden";
+  btn.disabled=false;btn.textContent="이미지로 저장";
+});
+function alertBox(msg){shotBody.innerHTML="<p></p>";shotBody.firstChild.textContent=msg;shotPanel.hidden=false;scrim2.hidden=false;}
+
+render();
+</script>
+</body>
+</html>
