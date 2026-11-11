@@ -261,7 +261,7 @@ function render(){
 
 /* ---------- 영화 검색 ----------
    TMDB 키가 있으면 TMDB(한국어 제목·포스터)를 쓰고, 없으면 iTunes·위키백과로 찾는다. */
-const TMDB_KEY="";
+const TMDB_KEY="2b975e6157aa50f3ebe2cca7a8ddcdb6";
 let jsonpN=0;
 function jsonp(url,ms=6000){
   return new Promise((res,rej)=>{
@@ -310,7 +310,10 @@ async function itunes(term){
     img:x.artworkUrl100?x.artworkUrl100.replace(/\/\d+x\d+bb\./,"/400x600bb."):null}));
 }
 async function searchMovies(term){
-  const jobs=TMDB_KEY?[tmdb(term)]:[itunes(term),wiki("ko",term),wiki("en",term)];
+  if(TMDB_KEY){
+    try{const t=await tmdb(term);if(t.length)return t.filter(m=>m.img).concat(t.filter(m=>!m.img)).slice(0,30);}catch(e){}
+  }
+  const jobs=[itunes(term),wiki("ko",term),wiki("en",term)];
   const parts=await Promise.allSettled(jobs);
   if(parts.every(p=>p.status==="rejected"))throw new Error("network");
   const out=[],seen=new Set();
