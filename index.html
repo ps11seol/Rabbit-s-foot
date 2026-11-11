@@ -96,6 +96,17 @@ body{color:var(--mug);font-family:var(--hand);font-size:14px;line-height:1.5;min
 .info{margin-top:14px;background:var(--white);border-radius:18px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr;gap:6px 12px}
 .info dt{color:var(--green);font-size:13px;white-space:nowrap}
 .info dd{margin:0;font-size:13px;word-break:keep-all}
+.ai{margin-top:22px;background:var(--white);border:2.5px solid var(--mug);border-radius:18px 22px 16px 20px/20px 16px 22px 18px;padding:14px}
+.ai h2{margin:0;font-weight:400;font-size:18px;display:flex;align-items:center;gap:8px}
+.ai h2::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--tang);flex:none}
+.ai-sub{margin:4px 0 10px;font-size:13px;color:var(--soft);word-break:keep-all}
+.ai-box{margin:0;max-height:132px;overflow:auto;white-space:pre-wrap;word-break:break-all;background:var(--paper);border-radius:12px;padding:10px 12px;
+  font:12px/1.55 "Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;color:var(--mug);border:1.5px dashed rgba(37,40,32,.25)}
+.ai-box:focus-visible{outline:2px solid var(--tang)}
+.ai-actions{display:flex;gap:8px;margin-top:10px}
+.ai-actions .btn{text-align:center;text-decoration:none;font-size:15px}
+.ai-actions .btn:not(.primary){flex:none}
+.ai-note{margin:8px 0 0;font-size:13px;color:var(--green);min-height:1.2em}
 .join{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding:16px 18px;
   background:var(--green);color:var(--paper);text-decoration:none;border:2.5px solid var(--mug);
   border-radius:20px 24px 18px 22px/22px 18px 24px 20px;box-shadow:0 5px 0 var(--mug)}
@@ -169,6 +180,17 @@ body{color:var(--mug);font-family:var(--hand);font-size:14px;line-height:1.5;min
     </div>
 
     <div class="grid" id="grid"></div>
+
+    <section class="ai" aria-labelledby="aiTitle">
+      <h2 id="aiTitle">ChatGPT로 내 취향 분석하기</h2>
+      <p class="ai-sub">채운 영화로 분석 프롬프트를 만들어 둘게요. 복사해서 ChatGPT에 붙여넣기만 하면 돼요.</p>
+      <pre class="ai-box" id="promptBox" tabindex="0" aria-label="분석 프롬프트 미리보기"></pre>
+      <div class="ai-actions">
+        <button type="button" class="btn primary" id="copyPrompt">프롬프트 복사하기</button>
+        <a class="btn" href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPT 열기</a>
+      </div>
+      <p class="ai-note" id="copyNote" role="status"></p>
+    </section>
 
     <button type="button" class="desk" id="desk" aria-label="토끼 쓰다듬기"><img src="rabbit.png" alt="책상에 엎드려 그림을 그리는 토끼" width="1000" height="557"></button>
 
@@ -257,6 +279,7 @@ function render(){
     const l=document.createElement("div");l.className="label";const ls=document.createElement("span");ls.textContent=label;l.appendChild(ls);
     cell.append(b,l);grid.appendChild(cell);
   });
+  if(typeof updatePrompt==="function")updatePrompt();
 }
 
 /* ---------- 영화 검색 ----------
@@ -457,10 +480,10 @@ async function drawChart(){
   [[-50,252],[-40,262],[-30,272]].forEach(([dx,y])=>{ctx.beginPath();ctx.arc(W-M+dx,y,4.5,0,7);ctx.fill();});
 
   // 9칸
-  const gap=24,top=336,sw=(W-2*M-2*gap)/3,sh=sw*4/3,rowH=sh+80;
+  const gap=26,top=336,sh=362,sw=sh*3/4,rowH=sh+80,GX=(W-(3*sw+2*gap))/2;
   const posters=await Promise.all(state.slots.map(posterFor));
   LABELS.forEach((label,i)=>{
-    const col=i%3,row=Math.floor(i/3),x=M+col*(sw+gap),y=top+row*rowH,m=state.slots[i],p=posters[i];
+    const col=i%3,row=Math.floor(i/3),x=GX+col*(sw+gap),y=top+row*rowH,m=state.slots[i],p=posters[i];
     ctx.save();rr(ctx,x,y,sw,sh,26);ctx.fillStyle=(m&&!p&&m.title)?C.white:C.mint;ctx.fill();ctx.clip();
     if(p){const r=Math.max(sw/p.width,sh/p.height),dw=p.width*r,dh=p.height*r;ctx.drawImage(p,x+(sw-dw)/2,y+(sh-dh)/2,dw,dh);}
     ctx.restore();
@@ -476,12 +499,19 @@ async function drawChart(){
     wrapLines(ctx,label,sw+6).slice(0,2).forEach((l,k)=>ctx.fillText(l,x+sw/2,y+sh+38+k*32));
     ctx.textAlign="left";
   });
-  // 바닥 안내
-  const by=top+3*rowH-4;
-  ctx.fillStyle=C.white;rr(ctx,M,by,W-2*M,96,30);ctx.fill();
-  ctx.font="34px "+F;ctx.fillStyle=C.green;ctx.textAlign="center";ctx.fillText("토끼발 상영회에서 만나요!",W/2,by+48);
-  ctx.font="24px "+F;ctx.fillStyle="rgba(37,40,32,.6)";ctx.fillText("영화감상시그 토끼발 · 시그장 박설 제작",W/2,by+82);
-  ctx.textAlign="left";
+  // 바닥: 가입신청 QR + 상영회 안내
+  const by=top+3*rowH-2,bh=H-by-34;
+  ctx.fillStyle=C.white;rr(ctx,M,by,W-2*M,bh,30);ctx.fill();
+  ctx.lineWidth=4;ctx.strokeStyle=C.mug;rr(ctx,M,by,W-2*M,bh,30);ctx.stroke();
+  const qs=bh-40;
+  try{const qr=await loadImg("qr.png",false);ctx.imageSmoothingEnabled=false;ctx.drawImage(qr,M+20,by+20,qs,qs);ctx.imageSmoothingEnabled=true;}catch(e){}
+  const tx=M+20+qs+28;
+  ctx.fillStyle=C.green;ctx.font="22px "+F;ctx.fillText("영화감상시그 토끼발",tx,by+50);
+  ctx.fillStyle=C.mug;ctx.font="44px "+F;ctx.fillText("가입신청 바로가기",tx,by+102);
+  ctx.fillStyle="rgba(37,40,32,.6)";ctx.font="22px "+F;ctx.fillText("QR을 찍으면 오픈채팅으로 바로 가요",tx,by+138);
+  ctx.fillStyle=C.yellow;rr(ctx,tx-4,by+bh-62,ctx.measureText("토끼발 상영회에서 만나요!").width*30/22+20,40,12);ctx.fill();
+  ctx.fillStyle=C.mug;ctx.font="30px "+F;ctx.fillText("토끼발 상영회에서 만나요!",tx+6,by+bh-32);
+  ctx.fillStyle="rgba(37,40,32,.5)";ctx.font="18px "+F;ctx.textAlign="right";ctx.fillText("시그장 박설 제작",W-M-24,by+50);ctx.textAlign="left";
   return c;
 }
 document.getElementById("saveBtn").addEventListener("click",async()=>{
@@ -508,6 +538,45 @@ document.getElementById("saveBtn").addEventListener("click",async()=>{
   }
   shotPanel.hidden=false;scrim2.hidden=false;document.body.style.overflow="hidden";
   btn.disabled=false;btn.textContent="이미지로 저장";
+});
+
+/* ---------- ChatGPT 분석 프롬프트 ---------- */
+const promptBox=document.getElementById("promptBox"),copyNote=document.getElementById("copyNote");
+function buildPrompt(){
+  const lines=LABELS.map((label,i)=>{const m=state.slots[i];
+    const v=m&&m.title?(m.title+(m.year?" ("+m.year+")":"")):"(비워둠)";
+    return (i+1)+". "+label+": "+v;});
+  return `너는 사람의 영화 취향을 따뜻하지만 날카롭게 읽어주는 영화 평론가야.
+아래는 내가 영화감상시그 '토끼발'의 영화 취향표에 채운 영화들이야. 칸마다 질문이 달라서, 어떤 칸에 어떤 영화를 넣었는지도 중요한 단서야.
+
+[내 영화 취향표]
+${lines.join("\n")}
+
+이걸 바탕으로 아래 순서대로 분석해줘.
+
+1. 한 줄 별명: 내 영화 취향을 한 문장 별명으로 지어줘.
+2. 취향 키워드 5개: 장르, 정서, 연출 스타일, 주제 등에서 해시태그로.
+3. 칸별 해석: 각 칸의 질문과 내가 고른 영화를 연결해서 왜 이 영화를 골랐을지 1~2문장씩. 특히 '대외적 최애'와 '남들에게 말 안하는 최애'의 차이, '한때 최애'에서 지금으로 오며 바뀐 취향, '내 인생이 담겨있는 영화'와 '이 영화처럼 살고 싶다'가 말해주는 나를 짚어줘.
+4. 숨은 공통점: 영화들을 관통하는 공통 요소 3가지 (감독, 시대, 인물 유형, 이야기 구조, 결말 방식 등).
+5. 관객 유형: 내 취향을 하나의 '관객 유형'으로 이름 붙이고 3~4문장으로 설명해줘.
+6. 다음에 볼 영화 5편: 위 목록에 없는 영화로, 제목(연도) · 감독 · 추천 이유 한 줄.
+7. 토끼발 상영회 추천작 1편: 동아리 사람들과 같이 보고 이야기 나누기 좋은 영화 1편과, 상영 후 나눌 질문 2개.
+
+비어 있는 칸은 건너뛰고, 채운 영화만으로 분석해줘.
+말투는 친구에게 말하듯 다정하게, 이모지는 조금만 써줘.
+영화 정보가 확실하지 않으면 지어내지 말고 확실하지 않다고 말해줘.`;
+}
+function updatePrompt(){promptBox.textContent=buildPrompt();}
+document.getElementById("copyPrompt").addEventListener("click",()=>{
+  const text=buildPrompt();
+  const filled=state.slots.filter(m=>m&&m.title).length;
+  const done=ok=>{copyNote.textContent=ok?(filled?"복사했어요! ChatGPT에 붙여넣어 보세요.":"복사했어요! 영화를 몇 편 채우면 분석이 더 정확해져요."):"자동 복사가 안 돼서 글을 선택해 뒀어요. 길게 눌러 복사해 주세요.";};
+  const fallback=()=>{const ta=document.createElement("textarea");ta.value=text;ta.setAttribute("readonly","");
+    ta.style.cssText="position:fixed;top:0;left:0;opacity:0";document.body.appendChild(ta);ta.select();ta.setSelectionRange(0,text.length);
+    let ok=false;try{ok=document.execCommand("copy");}catch(e){}ta.remove();
+    if(!ok){const r=document.createRange();r.selectNodeContents(promptBox);const sel=getSelection();sel.removeAllRanges();sel.addRange(r);}
+    done(ok);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(()=>done(true),fallback);}else fallback();
 });
 
 /* ---------- 토끼 움찔 ---------- */
