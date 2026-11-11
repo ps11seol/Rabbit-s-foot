@@ -6,11 +6,10 @@
 <title>토끼발 영화 취향표</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap">
+<link rel="preload" href="fonts/LeeSeoyun.ttf" as="font" type="font/ttf" crossorigin>
 <meta name="theme-color" content="#F7F3E9">
 <style>
-@font-face{font-family:"LeeSeoyun";font-display:swap;
-  src:url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/LeeSeoyun.woff") format("woff");}
+@font-face{font-family:"LeeSeoyun";font-display:swap;src:url("fonts/LeeSeoyun.ttf") format("truetype");}
 /* Layout: 미색 모눈 종이 한 장 — 위에 이름표, 큰 제목, 3×3 포스터 칸, 책상 위 토끼 그림, 흰 안내 상자 */
 :root{
   --mug:#252820;          /* 먹색: 글자·선 */
@@ -22,13 +21,13 @@
   --white:#FFFDF8;
   --grid:rgba(37,40,32,.055);
   --soft:rgba(37,40,32,.55);
-  --hand:"LeeSeoyun","Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --hand:"LeeSeoyun","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
   color-scheme:light;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{margin:0}
-body{color:var(--mug);font-family:var(--hand);font-size:16px;line-height:1.5;min-height:100vh;
+body{color:var(--mug);font-family:var(--hand);font-size:14px;line-height:1.5;min-height:100vh;
   background-color:var(--paper);
   background-image:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .15 0 0 0 0 .16 0 0 0 0 .12 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"),
@@ -36,66 +35,76 @@ body{color:var(--mug);font-family:var(--hand);font-size:16px;line-height:1.5;min
     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
   background-size:160px 160px,22px 22px,22px 22px;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
-  padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(92px + env(safe-area-inset-bottom,0px));
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(80px + env(safe-area-inset-bottom,0px));
   -webkit-tap-highlight-color:transparent}
-.wrap{max-width:460px;margin:0 auto;padding-block:16px}
+.wrap{max-width:460px;margin:0 auto;padding-block:10px}
 
-/* 취향표 한 장 */
-#sheet{position:relative;padding:18px 4px 8px;background:transparent}
-.namerow{display:flex;align-items:center;gap:10px}
-.namerow img{width:92px;height:auto;flex:none}
+/* 취향표 한 장 — 9칸이 한 화면에 들어오도록 촘촘하게 */
+#sheet{position:relative;padding:8px 2px 8px;background:transparent}
+.namerow{display:flex;align-items:center;gap:8px}
+.namerow img{width:64px;height:auto;flex:none}
 .word{display:flex;flex-direction:column;line-height:1}
-.word b{font-weight:400;font-size:38px;letter-spacing:-.01em}
-.word small{font-size:10px;letter-spacing:.34em;margin-top:6px}
-.pill{margin-left:auto;align-self:flex-start;background:var(--mint);color:var(--green);font-size:13px;padding:3px 12px;border-radius:999px;white-space:nowrap}
-.hero{position:relative;margin-top:26px}
-.hero .t1{font-size:34px;line-height:1.1;margin:0}
-.hero .t2{font-size:62px;line-height:1.05;margin:4px 0 10px;letter-spacing:-.01em}
-.hero .t1 .hl{background:linear-gradient(transparent 58%,var(--yellow) 58%,var(--yellow) 92%,transparent 92%);padding:0 2px}
-.dot{position:absolute;border-radius:50%;display:grid;place-items:center}
-.dot.o{width:50px;height:50px;background:var(--tang);right:4px;top:-14px}
-.dot.y{width:30px;height:30px;background:var(--yellow);right:66px;top:6px}
+.word b{font-weight:400;font-size:24px}
+.word small{font-size:8.5px;letter-spacing:.28em;margin-top:4px}
+.pill{margin-left:auto;background:var(--mint);color:var(--green);font-size:12px;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.hero{position:relative;margin-top:10px;display:flex;align-items:center;gap:8px}
+.hero .t2{font-weight:400;font-size:30px;line-height:1.1;margin:0;letter-spacing:-.01em}
+.dot{border-radius:50%;display:grid;place-items:center;flex:none}
+.dot.y{width:22px;height:22px;background:var(--yellow);margin-left:auto}
+.dot.o{width:34px;height:34px;background:var(--tang)}
 .dot svg{display:block}
-#chartTitle{display:block;width:100%;border:0;background:transparent;color:var(--mug);
-  font-family:var(--hand);font-size:19px;padding:2px 0;border-radius:6px}
-#chartTitle:focus{outline:2px dashed var(--green);outline-offset:3px}
-.edit-hint{font-size:12px;color:var(--soft)}
 
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 10px;margin-top:22px}
-.cell{display:flex;flex-direction:column;gap:7px;min-width:0}
-.slot{appearance:none;margin:0;padding:0;width:100%;aspect-ratio:2/3;max-width:100%;cursor:pointer;position:relative;overflow:hidden;
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 8px;margin:12px auto 0;
+  width:min(100%,calc((100vh - 300px) * .75 + 16px));width:min(100%,calc((100svh - 300px) * .75 + 16px));min-width:240px;max-width:100%}
+.cell{display:flex;flex-direction:column;gap:4px;min-width:0}
+.slot{appearance:none;margin:0;padding:0;width:100%;aspect-ratio:3/4;max-width:100%;cursor:pointer;position:relative;overflow:hidden;
   background:var(--mint);color:var(--green);font:inherit;display:flex;align-items:center;justify-content:center;
-  border:2.5px solid var(--mug);border-radius:14px 18px 12px 16px/16px 12px 18px 14px}
-.cell:nth-child(3n+2) .slot{border-radius:18px 12px 16px 14px/12px 18px 14px 16px}
-.cell:nth-child(3n) .slot{border-radius:12px 16px 18px 12px/18px 14px 12px 16px}
+  border:2px solid var(--mug);border-radius:12px 15px 10px 14px/14px 10px 15px 12px}
+.cell:nth-child(3n+2) .slot{border-radius:15px 10px 14px 12px/10px 15px 12px 14px}
+.cell:nth-child(3n) .slot{border-radius:10px 14px 15px 10px/15px 12px 10px 14px}
 .slot:active{transform:rotate(-1deg) scale(.98)}
 .slot:focus-visible{outline:3px solid var(--tang);outline-offset:3px}
-.slot .num{position:absolute;top:6px;left:8px;font-size:13px;color:var(--green);z-index:1;line-height:1}
+.slot .num{position:absolute;top:5px;left:7px;font-size:11px;color:var(--green);z-index:1;line-height:1}
 .slot .plus{display:grid;place-items:center}
+.slot .plus svg{width:26px;height:26px}
 .slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.slot .tname{position:absolute;inset:auto 0 0 0;padding:18px 7px 7px;font-size:12px;line-height:1.25;color:#fff;
-  background:linear-gradient(transparent,rgba(37,40,32,.8));text-align:left;
+.slot .tname{position:absolute;inset:auto 0 0 0;padding:14px 6px 5px;font-size:11px;line-height:1.2;color:#fff;
+  background:linear-gradient(transparent,rgba(37,40,32,.82));text-align:left;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.slot.filled .num{color:#fff;background:var(--mug);padding:3px 5px;border-radius:6px;top:5px;left:5px}
-.slot.textonly{background:var(--white);color:var(--mug);padding:10px;font-size:18px;line-height:1.25;text-align:center;word-break:keep-all}
-.label{font-size:15px;line-height:1.28;text-align:center;word-break:keep-all;min-height:2.56em}
+.slot.filled .num{color:#fff;background:var(--mug);padding:2px 4px;border-radius:5px;top:4px;left:4px}
+.slot.textonly{background:var(--white);color:var(--mug);padding:8px;font-size:14px;line-height:1.25;text-align:center;word-break:keep-all}
+.label{font-size:12px;line-height:1.22;text-align:center;word-break:keep-all;min-height:2.44em}
 .cell.rec .label span{background:linear-gradient(transparent 55%,var(--yellow) 55%)}
 
-.desk{position:relative;margin:26px auto 0;width:100%;max-width:400px}
-.desk::before{content:"";position:absolute;inset:6% 4% 0;background:var(--mint);border-radius:50%;z-index:0}
-.desk img{position:relative;z-index:1;display:block;width:88%;height:auto;margin:0 auto;padding-top:4%}
-.info{margin-top:20px;background:var(--white);border-radius:22px;padding:16px 18px;display:grid;grid-template-columns:auto 1fr;gap:10px 16px;
-  box-shadow:0 1px 0 rgba(37,40,32,.06)}
-.info dt{color:var(--green);font-size:16px;white-space:nowrap}
-.info dd{margin:0;font-size:16px;word-break:keep-all}
-.foot{display:flex;justify-content:center;margin-top:14px;font-size:10px;letter-spacing:.34em;color:var(--soft)}
+.desk{appearance:none;border:0;background:none;padding:0;font:inherit;cursor:pointer;display:block;
+  position:relative;margin:22px auto 0;width:86%;max-width:340px;-webkit-user-select:none;user-select:none}
+.desk::before{content:"";position:absolute;inset:8% 2% 0;background:var(--mint);border-radius:50%;z-index:0}
+.desk img{position:relative;z-index:1;display:block;width:90%;height:auto;margin:0 auto;padding-top:4%;transform-origin:50% 75%;pointer-events:none}
+.desk:focus-visible{outline:3px dashed var(--tang);outline-offset:4px;border-radius:50%}
+.desk.wiggle img{animation:wiggle .7s cubic-bezier(.3,1.6,.5,1)}
+@keyframes wiggle{
+  0%{transform:none}
+  12%{transform:scale(1.04,.93) translateY(3px)}
+  26%{transform:scale(.97,1.05) rotate(-2.5deg) translateY(-4px)}
+  40%{transform:scale(1.02,.97) rotate(2deg)}
+  54%{transform:scale(.99,1.02) rotate(-1.5deg) translateY(-1px)}
+  68%{transform:rotate(1deg)}
+  84%{transform:rotate(-.4deg)}
+  100%{transform:none}}
+.pop{position:absolute;z-index:2;font-size:15px;color:var(--tang);pointer-events:none;animation:pop .9s ease-out forwards}
+@keyframes pop{from{opacity:0;transform:translateY(6px) scale(.6)}25%{opacity:1;transform:translateY(-6px) scale(1.1)}to{opacity:0;transform:translateY(-26px) scale(1)}}
+@media (prefers-reduced-motion:reduce){.desk.wiggle img,.pop{animation:none}}
+.info{margin-top:14px;background:var(--white);border-radius:18px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr;gap:6px 12px}
+.info dt{color:var(--green);font-size:13px;white-space:nowrap}
+.info dd{margin:0;font-size:13px;word-break:keep-all}
+.foot{display:flex;justify-content:center;margin-top:10px;font-size:8.5px;letter-spacing:.3em;color:var(--soft)}
 
 /* 하단 버튼 */
-.bar{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;
+.bar{position:fixed;z-index:10;left:0;right:0;bottom:0;display:flex;justify-content:center;
   padding:14px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
   background:linear-gradient(rgba(247,243,233,0),var(--paper) 40%)}
 .bar .in{display:flex;gap:8px;width:100%;max-width:460px}
-.btn{appearance:none;background:var(--paper);color:var(--mug);font:18px var(--hand);padding:11px 18px;cursor:pointer;
+.btn{appearance:none;background:var(--paper);color:var(--mug);font:15px var(--hand);padding:10px 16px;cursor:pointer;
   border:2.5px solid var(--mug);border-radius:16px 20px 14px 18px/18px 14px 20px 16px}
 .btn.primary{flex:1;background:var(--green);border-color:var(--mug);color:var(--paper)}
 .btn:active{transform:translateY(1px)}
@@ -111,9 +120,9 @@ body{color:var(--mug);font-family:var(--hand);font-size:16px;line-height:1.5;min
 @media (prefers-reduced-motion:reduce){.panel{animation:none}}
 .panel .inner{max-width:460px;width:100%;margin:0 auto;display:flex;flex-direction:column;min-height:0;flex:1}
 .grab{width:42px;height:5px;border-radius:3px;background:var(--mug);opacity:.25;margin:0 auto 14px}
-.ptitle{font-weight:400;font-size:26px;margin:0 0 10px}
+.ptitle{font-weight:400;font-size:20px;margin:0 0 10px}
 .ptitle::before{content:"";display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--tang);margin-right:8px;vertical-align:middle}
-#q{flex:1;min-width:0;width:100%;font:18px var(--hand);padding:11px 14px;background:var(--white);color:var(--mug);
+#q{flex:1;min-width:0;width:100%;font:16px var(--hand);padding:11px 14px;background:var(--white);color:var(--mug);
   border:2.5px solid var(--mug);border-radius:14px 18px 12px 16px/16px 12px 18px 14px}
 #q::placeholder{color:var(--soft)}
 #q:focus{outline:none;box-shadow:0 0 0 4px var(--mint)}
@@ -125,10 +134,10 @@ body{color:var(--mug);font-family:var(--hand);font-size:16px;line-height:1.5;min
 #results li button:active{background:var(--mint)}
 #results li button:focus-visible{outline:2px solid var(--tang)}
 #results img,#results .noimg{width:46px;aspect-ratio:2/3;border-radius:6px;object-fit:cover;background:var(--mint);flex:none;border:1.5px solid var(--mug)}
-#results .t{font-size:17px;line-height:1.25}
+#results .t{font-size:15px;line-height:1.25}
 #results .m{font-size:13px;color:var(--soft)}
 .pactions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.pactions .btn{flex:1;font-size:16px;padding:9px 8px;text-align:center}
+.pactions .btn{flex:1;font-size:14px;padding:9px 8px;text-align:center}
 .danger{color:#b8532a}
 
 /* 저장 미리보기 */
@@ -141,28 +150,26 @@ body{color:var(--mug);font-family:var(--hand);font-size:16px;line-height:1.5;min
 <div class="wrap">
   <section id="sheet" aria-label="토끼발 영화 취향표">
     <div class="namerow">
-      <img src="rabbit.png" alt="" width="92" height="51">
-      <div class="word"><b>토끼발</b><small>TOKKIBAL</small></div>
+      <img src="rabbit.png" alt="" width="1000" height="557">
+      <div class="word"><b>토끼발</b><small>RABBIT'S FOOT</small></div>
       <span class="pill">영화감상시그</span>
     </div>
 
     <div class="hero">
-      <span class="dot o" aria-hidden="true"><svg width="14" height="12" viewBox="0 0 14 12"><circle cx="4" cy="3" r="1.6" fill="#252820"/><circle cx="8" cy="6" r="1.6" fill="#252820"/><circle cx="11" cy="9" r="1.6" fill="#252820"/></svg></span>
+      <h1 class="t2">영화 취향표</h1>
       <span class="dot y" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8"><circle cx="3" cy="2" r="1.4" fill="#252820"/><circle cx="7" cy="6" r="1.4" fill="#252820"/></svg></span>
-      <p class="t1"><span class="hl">&lt;토끼발&gt;</span></p>
-      <h1 class="t2" style="font-weight:400">영화 취향표</h1>
-      <input id="chartTitle" maxlength="24" value="나는 영화가 너무너무 좋다" aria-label="한 줄 소개 (눌러서 바꾸기)">
+      <span class="dot o" aria-hidden="true"><svg width="14" height="12" viewBox="0 0 14 12"><circle cx="4" cy="3" r="1.6" fill="#252820"/><circle cx="8" cy="6" r="1.6" fill="#252820"/><circle cx="11" cy="9" r="1.6" fill="#252820"/></svg></span>
     </div>
 
     <div class="grid" id="grid"></div>
 
-    <div class="desk"><img src="rabbit.png" alt="책상에 엎드려 그림을 그리는 토끼" width="1000" height="557"></div>
+    <button type="button" class="desk" id="desk" aria-label="토끼 쓰다듬기"><img src="rabbit.png" alt="책상에 엎드려 그림을 그리는 토끼" width="1000" height="557"></button>
 
     <dl class="info">
       <dt>상영회</dt><dd>추천영화는 토끼발 상영회에서 만나요!</dd>
       <dt>만든 사람</dt><dd>영화감상시그 토끼발 · 시그장 박설 제작</dd>
     </dl>
-    <div class="foot">TOKKIBAL MOVIE SIG</div>
+    <div class="foot">RABBIT'S FOOT MOVIE SIG</div>
   </section>
 </div>
 
@@ -214,9 +221,7 @@ try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&Array.isArray(s.slots))s
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
 
 const grid=document.getElementById("grid");
-const titleEl=document.getElementById("chartTitle");
-titleEl.value=state.title;
-titleEl.addEventListener("input",()=>{state.title=titleEl.value;persist();});
+
 
 function render(){
   grid.innerHTML="";
@@ -244,41 +249,59 @@ function render(){
   });
 }
 
-/* ---------- 영화 검색 (iTunes 영화 DB, 키 불필요) ---------- */
+/* ---------- 영화 검색: 위키백과(한국어·영어) + iTunes, 키 불필요 ---------- */
 let jsonpN=0;
-function jsonp(url,ms=8000){
+function jsonp(url,ms=6000){
   return new Promise((res,rej)=>{
     const cb="__mv"+(++jsonpN)+Date.now();
     const s=document.createElement("script");
-    const done=()=>{delete window[cb];s.remove();clearTimeout(t);};
+    const done=()=>{try{delete window[cb];}catch(e){window[cb]=undefined;}s.remove();clearTimeout(t);};
     const t=setTimeout(()=>{done();rej(new Error("timeout"));},ms);
     window[cb]=d=>{done();res(d);};
     s.onerror=()=>{done();rej(new Error("load"));};
     s.src=url+"&callback="+cb;document.head.appendChild(s);
   });
 }
+function withTimeout(p,ms){return Promise.race([p,new Promise((_,rej)=>setTimeout(()=>rej(new Error("timeout")),ms))]);}
+const cleanTitle=t=>t.replace(/\s*\((?:\d{4}년\s*)?(?:[^()]*\s)?영화\)$/,"").replace(/\s*\((?:\d{4}\s+)?(?:[^()]*\s)?film\)$/i,"").trim();
+async function wiki(lang,term){
+  const url="https://"+lang+".wikipedia.org/w/api.php?action=query&format=json&formatversion=2&origin=*"+
+    "&generator=search&gsrnamespace=0&gsrlimit=20&gsrsearch="+encodeURIComponent(term)+
+    "&prop=pageimages|description&piprop=thumbnail&pithumbsize=400&pilicense=any";
+  const r=await withTimeout(fetch(url),7000);
+  if(!r.ok)throw new Error("http "+r.status);
+  const d=await r.json();
+  const pages=(d.query&&d.query.pages)||[];
+  pages.sort((a,b)=>(a.index||0)-(b.index||0));
+  const isFilm=lang==="ko"
+    ? p=>/영화/.test(p.description||"")||/\(.*영화\)$/.test(p.title)
+    : p=>/\bfilm\b/i.test(p.description||"")||/\(.*film\)$/i.test(p.title);
+  return pages.filter(isFilm).map(p=>{
+    const y=((p.description||"")+" "+p.title).match(/(19|20)\d{2}/);
+    return {title:cleanTitle(p.title),year:y?y[0]:"",director:p.description||"",
+            img:p.thumbnail?p.thumbnail.source:null};
+  });
+}
+async function itunes(term){
+  const base="https://itunes.apple.com/search?media=movie&entity=movie&limit=15&term="+encodeURIComponent(term);
+  const d=await jsonp(base+"&country=KR");
+  return ((d&&d.results)||[]).map(x=>({
+    title:x.trackName,year:(x.releaseDate||"").slice(0,4),director:x.artistName||"",
+    img:x.artworkUrl100?x.artworkUrl100.replace(/\/\d+x\d+bb\./,"/400x600bb."):null}));
+}
 async function searchMovies(term){
-  const base="https://itunes.apple.com/search?media=movie&entity=movie&limit=25&term="+encodeURIComponent(term);
-  const [kr,us]=await Promise.allSettled([
-    jsonp(base+"&country=KR&lang=ko_kr"),
-    jsonp(base+"&country=US")
-  ]);
+  const parts=await Promise.allSettled([wiki("ko",term),itunes(term),wiki("en",term)]);
+  if(parts.every(p=>p.status==="rejected"))throw new Error("network");
   const out=[],seen=new Set();
-  for(const r of [kr,us]){
-    if(r.status!=="fulfilled"||!r.value||!r.value.results)continue;
-    for(const x of r.value.results){
-      const key=(x.trackName||"")+"|"+(x.releaseDate||"").slice(0,4);
-      if(seen.has(key))continue;seen.add(key);
-      out.push({
-        title:x.trackName,
-        year:(x.releaseDate||"").slice(0,4),
-        director:x.artistName||"",
-        img:x.artworkUrl100?x.artworkUrl100.replace(/\/\d+x\d+bb\./,"/400x600bb."):null
-      });
+  for(const p of parts){
+    if(p.status!=="fulfilled")continue;
+    for(const m of p.value){
+      const key=m.title.replace(/\s/g,"").toLowerCase()+"|"+m.year;
+      if(seen.has(key))continue;seen.add(key);out.push(m);
     }
   }
-  if(kr.status==="rejected"&&us.status==="rejected")throw new Error("network");
-  return out;
+  // 포스터 있는 것 먼저
+  return out.filter(m=>m.img).concat(out.filter(m=>!m.img)).slice(0,30);
 }
 
 /* ---------- 패널 ---------- */
@@ -381,6 +404,19 @@ document.getElementById("saveBtn").addEventListener("click",async()=>{
   btn.disabled=false;btn.textContent="이미지로 저장";
 });
 function alertBox(msg){shotBody.innerHTML="<p></p>";shotBody.firstChild.textContent=msg;shotPanel.hidden=false;scrim2.hidden=false;}
+
+/* ---------- 토끼 움찔 ---------- */
+const desk=document.getElementById("desk");
+const pops=["!","♥","!?","♪"];
+desk.addEventListener("click",e=>{
+  desk.classList.remove("wiggle");void desk.offsetWidth;desk.classList.add("wiggle");
+  if(navigator.vibrate){try{navigator.vibrate(12);}catch(_){}}
+  const p=document.createElement("span");p.className="pop";p.textContent=pops[Math.floor(Math.random()*pops.length)];
+  const r=desk.getBoundingClientRect();
+  p.style.left=(46+Math.random()*16)+"%";p.style.top=(4+Math.random()*10)+"%";
+  desk.appendChild(p);setTimeout(()=>p.remove(),950);
+});
+desk.addEventListener("animationend",ev=>{if(ev.target.tagName==="IMG")desk.classList.remove("wiggle");});
 
 render();
 </script>
