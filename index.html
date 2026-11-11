@@ -6,190 +6,163 @@
 <title>토끼발 영화 취향표</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Fredoka:wght@400;500&display=swap">
-<meta name="theme-color" content="#101937">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap">
+<meta name="theme-color" content="#F7F3E9">
 <style>
 @font-face{font-family:"LeeSeoyun";font-display:swap;
   src:url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/LeeSeoyun.woff") format("woff");}
-/* Layout: 머뭇 유니버스 톤 — 깊은 남색 우주, 작은 놀이 행성 위 클레이 토끼, 번호 붙은 9개의 문(포스터 칸) */
+/* Layout: 미색 모눈 종이 한 장 — 위에 이름표, 큰 제목, 3×3 포스터 칸, 책상 위 토끼 그림, 흰 안내 상자 */
 :root{
-  --space:#101937;        /* 우주 남색 (mumut 테마색) */
-  --space2:#1a2552;
-  --clay:#f6f3ec;         /* 무광 클레이 화이트 */
-  --clay-shade:#dcd6c8;
-  --ink:#f6f3ec;          /* 글자 */
-  --ink-dark:#101937;
-  --muted:#9fa8cf;
-  --sun:#ffd66b;          /* 행성·달 포인트 */
-  --pink:#ff9fb5;         /* 토끼 귀 */
-  --card:#16214a;
-  --slot:#22306a;
-  --line:rgba(246,243,236,.14);
-  --hand:"LeeSeoyun","Gowun Dodum","Apple SD Gothic Neo",sans-serif;
-  --body:"Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
-  --latin:"Fredoka","Gowun Dodum",system-ui,sans-serif;
-  color-scheme:dark;
+  --mug:#252820;          /* 먹색: 글자·선 */
+  --paper:#F7F3E9;        /* 종이색: 바탕 */
+  --green:#31594C;        /* 깊은 초록: 강조 */
+  --tang:#F18B51;         /* 귤빛: 작은 포인트 */
+  --mint:#DFE8D5;         /* 연한 초록: 카드·보조 바탕 */
+  --yellow:#F3D985;       /* 노란빛: 포인트 보조 */
+  --white:#FFFDF8;
+  --grid:rgba(37,40,32,.055);
+  --soft:rgba(37,40,32,.55);
+  --hand:"LeeSeoyun","Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  color-scheme:light;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{margin:0}
-body{color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;min-height:100vh;
-  background:
-    radial-gradient(1.3px 1.3px at 9% 6%,#fff 98%,transparent),
-    radial-gradient(1px 1px at 81% 3%,#fff 98%,transparent),
-    radial-gradient(1.5px 1.5px at 93% 19%,#fff 98%,transparent),
-    radial-gradient(1px 1px at 30% 13%,#fff 98%,transparent),
-    radial-gradient(1px 1px at 58% 27%,#fff 98%,transparent),
-    radial-gradient(1.3px 1.3px at 4% 42%,#fff 98%,transparent),
-    radial-gradient(1px 1px at 73% 57%,#fff 98%,transparent),
-    radial-gradient(1px 1px at 18% 72%,#fff 98%,transparent),
-    radial-gradient(1.2px 1.2px at 96% 77%,#fff 98%,transparent),
-    radial-gradient(1px 1px at 47% 90%,#fff 98%,transparent),
-    radial-gradient(80% 50% at 85% 0%,rgba(120,140,255,.18),transparent 70%),
-    linear-gradient(180deg,var(--space) 0%,var(--space2) 100%) fixed;
-  background-color:var(--space);
+body{color:var(--mug);font-family:var(--hand);font-size:16px;line-height:1.5;min-height:100vh;
+  background-color:var(--paper);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .15 0 0 0 0 .16 0 0 0 0 .12 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"),
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:160px 160px,22px 22px,22px 22px;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
   padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(92px + env(safe-area-inset-bottom,0px));
   -webkit-tap-highlight-color:transparent}
-.wrap{max-width:460px;margin:0 auto;padding-block:18px}
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.topbar .brand{font-family:var(--hand);font-size:20px}
-.topbar .tag{font-family:var(--latin);font-size:10.5px;letter-spacing:.22em;color:var(--muted)}
+.wrap{max-width:460px;margin:0 auto;padding-block:16px}
 
-/* 취향표 카드 */
-#sheet{position:relative;overflow:hidden;border-radius:28px;padding:22px 16px 20px;
-  background:
-    radial-gradient(1px 1px at 22% 8%,rgba(255,255,255,.85) 98%,transparent),
-    radial-gradient(1.2px 1.2px at 48% 4%,rgba(255,255,255,.8) 98%,transparent),
-    radial-gradient(1px 1px at 8% 20%,rgba(255,255,255,.7) 98%,transparent),
-    radial-gradient(110% 55% at 100% 0%,#2a3a86 0%,transparent 62%),
-    var(--card);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 24px 50px -24px rgba(0,0,0,.7)}
-.hero{position:relative;min-height:150px;padding-right:128px}
-.planet{position:absolute;top:-6px;right:-10px;width:150px;height:150px;pointer-events:none}
-.eyebrow{font-family:var(--latin);font-size:10.5px;letter-spacing:.24em;color:var(--sun);text-transform:uppercase;font-weight:500}
-.title{font-family:var(--hand);font-weight:400;font-size:34px;line-height:1.15;margin:6px 0 8px;color:var(--clay);text-wrap:balance}
-.title .br{color:var(--sun)}
-#chartTitle{display:block;width:100%;border:0;background:transparent;color:var(--muted);
-  font-family:var(--hand);font-size:16px;padding:2px 0;border-radius:6px}
-#chartTitle:focus{outline:2px dashed var(--pink);outline-offset:3px;color:var(--ink)}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 10px;margin-top:14px}
-.cell{display:flex;flex-direction:column;gap:8px;min-width:0}
-.slot{appearance:none;border:0;padding:0;margin:0;width:100%;aspect-ratio:2/3;max-width:100%;border-radius:16px;
-  background:linear-gradient(160deg,#2a3976,var(--slot));cursor:pointer;position:relative;overflow:hidden;color:var(--muted);
-  display:flex;align-items:center;justify-content:center;font:inherit;
-  box-shadow:inset 0 2px 0 rgba(255,255,255,.07),inset 0 -6px 12px rgba(0,0,0,.18),0 8px 16px -10px rgba(0,0,0,.6);
-  transition:transform .15s ease}
-.slot:active{transform:scale(.97)}
-.slot:focus-visible{outline:3px solid var(--pink);outline-offset:3px}
-.slot .num{position:absolute;top:7px;left:9px;font-family:var(--latin);font-size:10px;letter-spacing:.12em;color:var(--muted);z-index:1}
-.slot .plus{display:grid;place-items:center;opacity:.8}
+/* 취향표 한 장 */
+#sheet{position:relative;padding:18px 4px 8px;background:transparent}
+.namerow{display:flex;align-items:center;gap:10px}
+.namerow img{width:92px;height:auto;flex:none}
+.word{display:flex;flex-direction:column;line-height:1}
+.word b{font-weight:400;font-size:38px;letter-spacing:-.01em}
+.word small{font-size:10px;letter-spacing:.34em;margin-top:6px}
+.pill{margin-left:auto;align-self:flex-start;background:var(--mint);color:var(--green);font-size:13px;padding:3px 12px;border-radius:999px;white-space:nowrap}
+.hero{position:relative;margin-top:26px}
+.hero .t1{font-size:34px;line-height:1.1;margin:0}
+.hero .t2{font-size:62px;line-height:1.05;margin:4px 0 10px;letter-spacing:-.01em}
+.hero .t1 .hl{background:linear-gradient(transparent 58%,var(--yellow) 58%,var(--yellow) 92%,transparent 92%);padding:0 2px}
+.dot{position:absolute;border-radius:50%;display:grid;place-items:center}
+.dot.o{width:50px;height:50px;background:var(--tang);right:4px;top:-14px}
+.dot.y{width:30px;height:30px;background:var(--yellow);right:66px;top:6px}
+.dot svg{display:block}
+#chartTitle{display:block;width:100%;border:0;background:transparent;color:var(--mug);
+  font-family:var(--hand);font-size:19px;padding:2px 0;border-radius:6px}
+#chartTitle:focus{outline:2px dashed var(--green);outline-offset:3px}
+.edit-hint{font-size:12px;color:var(--soft)}
+
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 10px;margin-top:22px}
+.cell{display:flex;flex-direction:column;gap:7px;min-width:0}
+.slot{appearance:none;margin:0;padding:0;width:100%;aspect-ratio:2/3;max-width:100%;cursor:pointer;position:relative;overflow:hidden;
+  background:var(--mint);color:var(--green);font:inherit;display:flex;align-items:center;justify-content:center;
+  border:2.5px solid var(--mug);border-radius:14px 18px 12px 16px/16px 12px 18px 14px}
+.cell:nth-child(3n+2) .slot{border-radius:18px 12px 16px 14px/12px 18px 14px 16px}
+.cell:nth-child(3n) .slot{border-radius:12px 16px 18px 12px/18px 14px 12px 16px}
+.slot:active{transform:rotate(-1deg) scale(.98)}
+.slot:focus-visible{outline:3px solid var(--tang);outline-offset:3px}
+.slot .num{position:absolute;top:6px;left:8px;font-size:13px;color:var(--green);z-index:1;line-height:1}
+.slot .plus{display:grid;place-items:center}
 .slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.slot .tname{position:absolute;inset:auto 0 0 0;padding:18px 7px 7px;font-size:11px;line-height:1.3;color:#fff;
-  background:linear-gradient(transparent,rgba(0,0,0,.75));text-align:left;
+.slot .tname{position:absolute;inset:auto 0 0 0;padding:18px 7px 7px;font-size:12px;line-height:1.25;color:#fff;
+  background:linear-gradient(transparent,rgba(37,40,32,.8));text-align:left;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.slot.filled .num{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6)}
-.slot.textonly{background:var(--clay);color:var(--ink-dark);padding:10px;font-family:var(--hand);font-size:17px;line-height:1.25;text-align:center}
-.label{font-family:var(--hand);font-size:14px;line-height:1.3;text-align:center;color:var(--ink);word-break:keep-all;min-height:2.6em}
-.cell.rec .label{color:var(--sun)}
-.invite{margin-top:18px;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:20px;
-  background:var(--clay);color:var(--ink-dark);box-shadow:inset 0 -4px 0 var(--clay-shade)}
-.invite svg{flex:none}
-.invite p{margin:0;word-break:keep-all;font-family:var(--hand);font-size:18px;line-height:1.3}
-.credit{margin-top:14px;text-align:center;font-family:var(--hand);font-size:14px;color:var(--muted)}
-.credit b{color:var(--ink);font-weight:400}
-.credit .en{display:block;font-family:var(--latin);font-size:9.5px;letter-spacing:.24em;margin-top:2px;opacity:.7}
+.slot.filled .num{color:#fff;background:var(--mug);padding:3px 5px;border-radius:6px;top:5px;left:5px}
+.slot.textonly{background:var(--white);color:var(--mug);padding:10px;font-size:18px;line-height:1.25;text-align:center;word-break:keep-all}
+.label{font-size:15px;line-height:1.28;text-align:center;word-break:keep-all;min-height:2.56em}
+.cell.rec .label span{background:linear-gradient(transparent 55%,var(--yellow) 55%)}
+
+.desk{position:relative;margin:26px auto 0;width:100%;max-width:400px}
+.desk::before{content:"";position:absolute;inset:6% 4% 0;background:var(--mint);border-radius:50%;z-index:0}
+.desk img{position:relative;z-index:1;display:block;width:88%;height:auto;margin:0 auto;padding-top:4%}
+.info{margin-top:20px;background:var(--white);border-radius:22px;padding:16px 18px;display:grid;grid-template-columns:auto 1fr;gap:10px 16px;
+  box-shadow:0 1px 0 rgba(37,40,32,.06)}
+.info dt{color:var(--green);font-size:16px;white-space:nowrap}
+.info dd{margin:0;font-size:16px;word-break:keep-all}
+.foot{display:flex;justify-content:center;margin-top:14px;font-size:10px;letter-spacing:.34em;color:var(--soft)}
 
 /* 하단 버튼 */
 .bar{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;
   padding:14px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
-  background:linear-gradient(transparent,var(--space2) 40%)}
+  background:linear-gradient(rgba(247,243,233,0),var(--paper) 40%)}
 .bar .in{display:flex;gap:8px;width:100%;max-width:460px}
-.btn{appearance:none;border:0;background:var(--card);color:var(--ink);font:17px var(--hand);
-  padding:13px 18px;border-radius:999px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 0 0 1px var(--line)}
-.btn.primary{flex:1;background:var(--clay);color:var(--ink-dark);box-shadow:inset 0 -4px 0 var(--clay-shade),0 8px 18px -10px rgba(0,0,0,.6)}
+.btn{appearance:none;background:var(--paper);color:var(--mug);font:18px var(--hand);padding:11px 18px;cursor:pointer;
+  border:2.5px solid var(--mug);border-radius:16px 20px 14px 18px/18px 14px 20px 16px}
+.btn.primary{flex:1;background:var(--green);border-color:var(--mug);color:var(--paper)}
 .btn:active{transform:translateY(1px)}
-.btn:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.btn:focus-visible{outline:3px solid var(--tang);outline-offset:2px}
 
 /* 검색 시트 */
-.scrim{position:fixed;inset:0;background:rgba(5,8,24,.62);z-index:20}
-.panel{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--card);border-radius:28px 28px 0 0;
-  max-height:88vh;display:flex;flex-direction:column;box-shadow:0 -10px 40px rgba(0,0,0,.4);
+.scrim{position:fixed;inset:0;background:rgba(37,40,32,.38);z-index:20}
+.panel{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--paper);border-top:2.5px solid var(--mug);border-radius:26px 26px 0 0;
+  max-height:88vh;display:flex;flex-direction:column;
   padding:10px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
-  animation:up .24s cubic-bezier(.2,.9,.3,1.2)}
-@keyframes up{from{transform:translateY(40px);opacity:.5}to{transform:none;opacity:1}}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-.planet .bunny{animation:bob 3.2s ease-in-out infinite;transform-origin:center}
-@media (prefers-reduced-motion:reduce){.panel,.planet .bunny{animation:none}}
+  animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(36px);opacity:.6}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.panel{animation:none}}
 .panel .inner{max-width:460px;width:100%;margin:0 auto;display:flex;flex-direction:column;min-height:0;flex:1}
-.grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 14px}
-.ptitle{font-family:var(--hand);font-weight:400;font-size:24px;margin:0 0 10px;color:var(--sun)}
-.search{display:flex;gap:8px}
-#q{flex:1;min-width:0;font:16px var(--body);padding:13px 16px;border-radius:999px;border:0;background:var(--space);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
-#q::placeholder{color:var(--muted)}
-#q:focus{outline:none;box-shadow:inset 0 0 0 2px var(--sun)}
-#status{font-size:13px;color:var(--muted);margin:10px 4px 6px;min-height:1.4em}
+.grab{width:42px;height:5px;border-radius:3px;background:var(--mug);opacity:.25;margin:0 auto 14px}
+.ptitle{font-weight:400;font-size:26px;margin:0 0 10px}
+.ptitle::before{content:"";display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--tang);margin-right:8px;vertical-align:middle}
+#q{flex:1;min-width:0;width:100%;font:18px var(--hand);padding:11px 14px;background:var(--white);color:var(--mug);
+  border:2.5px solid var(--mug);border-radius:14px 18px 12px 16px/16px 12px 18px 14px}
+#q::placeholder{color:var(--soft)}
+#q:focus{outline:none;box-shadow:0 0 0 4px var(--mint)}
+.search{display:flex}
+#status{font-size:14px;color:var(--soft);margin:10px 4px 6px;min-height:1.4em}
 #results{list-style:none;margin:0;padding:0;overflow-y:auto;flex:1;min-height:120px;-webkit-overflow-scrolling:touch}
 #results li button{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:none;border:0;
-  padding:9px 6px;border-radius:14px;color:var(--ink);font:inherit;cursor:pointer}
-#results li button:active{background:var(--slot)}
-#results li button:focus-visible{outline:2px solid var(--pink)}
-#results img,#results .noimg{width:46px;aspect-ratio:2/3;border-radius:8px;object-fit:cover;background:var(--slot);flex:none}
-#results .t{font-weight:700;font-size:15px;line-height:1.3}
-#results .m{font-size:12px;color:var(--muted)}
+  padding:8px 6px;border-bottom:1.5px dashed rgba(37,40,32,.2);color:var(--mug);font:inherit;cursor:pointer}
+#results li button:active{background:var(--mint)}
+#results li button:focus-visible{outline:2px solid var(--tang)}
+#results img,#results .noimg{width:46px;aspect-ratio:2/3;border-radius:6px;object-fit:cover;background:var(--mint);flex:none;border:1.5px solid var(--mug)}
+#results .t{font-size:17px;line-height:1.25}
+#results .m{font-size:13px;color:var(--soft)}
 .pactions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.pactions .btn{flex:1;font-size:15px;padding:11px 10px;text-align:center}
-.danger{color:var(--pink)}
+.pactions .btn{flex:1;font-size:16px;padding:9px 8px;text-align:center}
+.danger{color:#b8532a}
 
 /* 저장 미리보기 */
 #shotWrap{text-align:center}
-#shotWrap img{width:100%;border-radius:18px}
-#shotWrap p{color:var(--muted);font-size:13px}
+#shotWrap img{width:100%;border-radius:14px;border:2px solid var(--mug)}
+#shotWrap p{color:var(--soft);font-size:15px}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="topbar">
-    <span class="brand">토끼발</span>
-    <span class="tag">MOVIE TASTE · NINE FRAMES</span>
-  </div>
-
   <section id="sheet" aria-label="토끼발 영화 취향표">
-    <svg class="planet" viewBox="0 0 150 150" aria-hidden="true">
-      <defs>
-        <radialGradient id="pl" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#ffe7a3"/><stop offset=".6" stop-color="#ffd66b"/><stop offset="1" stop-color="#e9a94a"/></radialGradient>
-        <radialGradient id="cl" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#ffffff"/><stop offset=".7" stop-color="#f6f3ec"/><stop offset="1" stop-color="#d6cfbf"/></radialGradient>
-      </defs>
-      <circle cx="80" cy="102" r="40" fill="url(#pl)"/>
-      <circle cx="66" cy="110" r="5" fill="#e3a447" opacity=".7"/><circle cx="96" cy="118" r="7" fill="#e3a447" opacity=".6"/><circle cx="98" cy="92" r="3" fill="#e3a447" opacity=".6"/>
-      <ellipse cx="80" cy="104" rx="60" ry="11" fill="none" stroke="#ff9fb5" stroke-width="3" opacity=".75" transform="rotate(-14 80 104)"/>
-      <g class="bunny">
-        <ellipse cx="62" cy="54" rx="6" ry="17" fill="url(#cl)" transform="rotate(-14 62 54)"/>
-        <ellipse cx="62" cy="55" rx="2.6" ry="11" fill="#ff9fb5" transform="rotate(-14 62 55)"/>
-        <ellipse cx="78" cy="51" rx="6" ry="17" fill="url(#cl)" transform="rotate(10 78 51)"/>
-        <ellipse cx="78" cy="52" rx="2.6" ry="11" fill="#ff9fb5" transform="rotate(10 78 52)"/>
-        <ellipse cx="72" cy="86" rx="17" ry="14" fill="url(#cl)"/>
-        <circle cx="70" cy="72" r="14" fill="url(#cl)"/>
-        <circle cx="65" cy="71" r="1.8" fill="#101937"/><circle cx="75" cy="71" r="1.8" fill="#101937"/>
-        <ellipse cx="70" cy="76" rx="2" ry="1.4" fill="#ff9fb5"/>
-        <circle cx="61" cy="76" r="2.6" fill="#ff9fb5" opacity=".45"/><circle cx="79" cy="76" r="2.6" fill="#ff9fb5" opacity=".45"/>
-      </g>
-      <g fill="#fff"><circle cx="18" cy="24" r="1.6"/><circle cx="132" cy="22" r="1.2"/><circle cx="140" cy="60" r="1"/><path d="M28 70l1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5z" fill="#ffd66b"/></g>
-    </svg>
+    <div class="namerow">
+      <img src="rabbit.png" alt="" width="92" height="51">
+      <div class="word"><b>토끼발</b><small>TOKKIBAL</small></div>
+      <span class="pill">영화감상시그</span>
+    </div>
+
     <div class="hero">
-      <div class="eyebrow">One rabbit night</div>
-      <h1 class="title"><span class="br">&lt;토끼발&gt;</span><br>영화 취향표</h1>
+      <span class="dot o" aria-hidden="true"><svg width="14" height="12" viewBox="0 0 14 12"><circle cx="4" cy="3" r="1.6" fill="#252820"/><circle cx="8" cy="6" r="1.6" fill="#252820"/><circle cx="11" cy="9" r="1.6" fill="#252820"/></svg></span>
+      <span class="dot y" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8"><circle cx="3" cy="2" r="1.4" fill="#252820"/><circle cx="7" cy="6" r="1.4" fill="#252820"/></svg></span>
+      <p class="t1"><span class="hl">&lt;토끼발&gt;</span></p>
+      <h1 class="t2" style="font-weight:400">영화 취향표</h1>
       <input id="chartTitle" maxlength="24" value="나는 영화가 너무너무 좋다" aria-label="한 줄 소개 (눌러서 바꾸기)">
     </div>
+
     <div class="grid" id="grid"></div>
-    <div class="invite">
-      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
-        <circle cx="17" cy="17" r="16" fill="#101937"/>
-        <path d="M21 8a9.5 9.5 0 1 0 5 17.6A10.5 10.5 0 0 1 21 8z" fill="#ffd66b"/>
-      </svg>
-      <p>추천영화는 토끼발 상영회에서 만나요!</p>
-    </div>
-    <div class="credit">영화감상시그 토끼발 · <b>시그장 박설</b> 제작<span class="en">TOKKIBAL MOVIE SIG</span></div>
+
+    <div class="desk"><img src="rabbit.png" alt="책상에 엎드려 그림을 그리는 토끼" width="1000" height="557"></div>
+
+    <dl class="info">
+      <dt>상영회</dt><dd>추천영화는 토끼발 상영회에서 만나요!</dd>
+      <dt>만든 사람</dt><dd>영화감상시그 토끼발 · 시그장 박설 제작</dd>
+    </dl>
+    <div class="foot">TOKKIBAL MOVIE SIG</div>
   </section>
 </div>
 
@@ -261,12 +234,12 @@ function render(){
       b.classList.add("textonly");b.textContent=m.title;
       b.setAttribute("aria-label",label+": "+m.title+" (바꾸기)");
     }else{
-      b.innerHTML='<span class="plus" aria-hidden="true"><svg width="30" height="36" viewBox="0 0 30 36"><ellipse cx="10" cy="9" rx="3" ry="8" fill="currentColor" opacity=".5"/><ellipse cx="20" cy="9" rx="3" ry="8" fill="currentColor" opacity=".5"/><circle cx="15" cy="25" r="10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="3 3"/><path d="M15 20v10M10 25h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>';
+      b.innerHTML='<span class="plus" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/><path d="M17.5 10.5c-.3 4.5-.2 8.8.2 13M10.5 17.2c4.3-.4 8.8-.5 13.2.1" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg></span>';
       b.setAttribute("aria-label",label+" 고르기");
     }
     b.addEventListener("click",()=>openPanel(i));
     if(!b.classList.contains("textonly")){const n=document.createElement("span");n.className="num";n.textContent=num;b.prepend(n);}
-    const l=document.createElement("div");l.className="label";l.textContent=label;
+    const l=document.createElement("div");l.className="label";const ls=document.createElement("span");ls.textContent=label;l.appendChild(ls);
     cell.append(b,l);grid.appendChild(cell);
   });
 }
@@ -394,7 +367,7 @@ document.getElementById("saveBtn").addEventListener("click",async()=>{
   try{
     const canvas=await html2canvas(document.getElementById("sheet"),{
       scale:Math.min(3,window.devicePixelRatio||2),useCORS:true,
-      backgroundColor:"#101937"
+      backgroundColor:"#F7F3E9"
     });
     const data=canvas.toDataURL("image/png");
     shotBody.innerHTML='<p>이미지를 길게 눌러 사진에 저장하세요</p>';
